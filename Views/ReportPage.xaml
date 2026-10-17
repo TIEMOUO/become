@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:controls="clr-namespace:Become.Controls"
+             xmlns:vm="clr-namespace:Become.ViewModels"
+             x:Class="Become.Views.ReportPage"
+             x:DataType="vm:ReportViewModel"
+             Shell.NavBarIsVisible="False"
+             ios:Page.UseSafeArea="True">
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="24,16,24,24" Spacing="24">
+
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Vos progrès, en lumière." Style="{StaticResource Title}"
+                           SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="Regardez le chemin déjà parcouru." Style="{StaticResource BodySecondary}" />
+                </VerticalStackLayout>
+
+                <!-- Sélecteur de période -->
+                <Border Style="{StaticResource Card}" Padding="8" HeightRequest="64">
+                    <Grid ColumnDefinitions="56,*,56">
+                        <Label Text="‹" FontSize="30" TextColor="{StaticResource Primary}"
+                               HorizontalOptions="Center" VerticalOptions="Center"
+                               SemanticProperties.Description="Mois précédent">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PreviousCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Column="1" Text="{Binding MonthTitle}" FontFamily="InterSemibold"
+                               FontSize="18" HorizontalOptions="Center" VerticalOptions="Center" />
+                        <Label Grid.Column="2" Text="›" FontSize="30" TextColor="{StaticResource Primary}"
+                               Opacity="{Binding NextOpacity}"
+                               HorizontalOptions="Center" VerticalOptions="Center"
+                               SemanticProperties.Description="Mois suivant">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NextCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </Border>
+
+                <!-- État vide : pas de données sur la période -->
+                <Border Style="{StaticResource Card}" IsVisible="{Binding HasNoData}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Rien à afficher pour l'instant" Style="{StaticResource H2}" />
+                        <Label Text="{Binding EmptyText}" Style="{StaticResource BodySecondary}" />
+                        <Button Text="+  Créer un objectif"
+                                Command="{Binding CreateGoalCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="0,8,0,0" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Données -->
+                <VerticalStackLayout Spacing="24" IsVisible="{Binding HasData}">
+
+                    <!-- Chiffres clés -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                        <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" Padding="20">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="24" />
+                            </Border.StrokeShape>
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Régularité" TextColor="White" />
+                                <Label Text="{Binding RegularityText}" FontFamily="InterBold" FontSize="40"
+                                       TextColor="White" />
+                                <Label Text="{Binding RegularityDetail}" FontSize="13" TextColor="White" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border Grid.Column="1" Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="Objectifs atteints" Style="{StaticResource BodySecondary}" />
+                                <Label Text="{Binding AchievedText}" FontFamily="InterBold" FontSize="40" />
+                                <Label Text="{Binding AchievedDetail}" FontSize="13"
+                                       TextColor="{StaticResource TextSecondary}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+
+                    <!-- Évolution : un seul graphique, utile -->
+                    <Border Style="{StaticResource Card}" Padding="20,20,20,16">
+                        <VerticalStackLayout Spacing="16">
+                            <Label Text="{Binding ChartTitle}" Style="{StaticResource SectionTitle}"
+                                   SemanticProperties.HeadingLevel="Level2" />
+
+                            <FlexLayout JustifyContent="SpaceAround" AlignItems="End" HeightRequest="190"
+                                        BindableLayout.ItemsSource="{Binding Weeks}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:WeekBar">
+                                        <VerticalStackLayout Spacing="4" VerticalOptions="End" WidthRequest="64"
+                                                             SemanticProperties.Description="{Binding Counts}">
+                                            <Label Text="{Binding PercentText}" FontFamily="InterSemibold" FontSize="14"
+                                                   TextColor="{StaticResource TextSecondary}"
+                                                   HorizontalTextAlignment="Center" />
+                                            <Border WidthRequest="44" HeightRequest="{Binding BarHeight}"
+                                                    BackgroundColor="{StaticResource BarMuted}" StrokeThickness="0"
+                                                    HorizontalOptions="Center">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="10,10,4,4" />
+                                                </Border.StrokeShape>
+                                                <Border.Triggers>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding IsHighlight}" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                                    </DataTrigger>
+                                                </Border.Triggers>
+                                            </Border>
+                                            <Label Text="{Binding Range}" Style="{StaticResource Caption}"
+                                                   HorizontalTextAlignment="Center" Margin="0,4,0,0" />
+                                            <Label Text="{Binding Counts}" FontSize="12"
+                                                   TextColor="{StaticResource TextSecondary}"
+                                                   HorizontalTextAlignment="Center" />
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
+
+                            <Label Text="{Binding ChartCaption}" Style="{StaticResource Caption}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Objectifs du mois -->
+                    <VerticalStackLayout Spacing="16" IsVisible="{Binding HasMonthGoals}">
+                        <Label Text="Les objectifs du mois" Style="{StaticResource SectionTitle}"
+                               SemanticProperties.HeadingLevel="Level2" />
+                        <Border Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="20" BindableLayout.ItemsSource="{Binding MonthGoals}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:MonthGoalItem">
+                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+                                            <Label Text="○" FontSize="24" TextColor="{StaticResource TextSecondary}"
+                                                   VerticalOptions="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsAchieved}" Value="True">
+                                                        <Setter Property="Text" Value="✓" />
+                                                        <Setter Property="TextColor" Value="{StaticResource Success}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                                <Label Text="{Binding Title}" Style="{StaticResource CardTitle}" FontSize="17" />
+                                                <Label Text="{Binding Detail}" Style="{StaticResource Caption}" />
+                                            </VerticalStackLayout>
+                                            <Border Grid.Column="2" Style="{StaticResource Badge}"
+                                                    BackgroundColor="{StaticResource PrimaryTint}" VerticalOptions="Center">
+                                                <Label Text="{Binding StatusText}" FontFamily="InterSemibold" FontSize="14"
+                                                       TextColor="{StaticResource TextSecondary}">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding IsAchieved}" Value="True">
+                                                            <Setter Property="TextColor" Value="{StaticResource Success}" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                                <Border.Triggers>
+                                                    <DataTrigger TargetType="Border" Binding="{Binding IsAchieved}" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="{StaticResource SuccessTint}" />
+                                                    </DataTrigger>
+                                                </Border.Triggers>
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Message d'encouragement -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Le progrès, pas la perfection." FontFamily="InterSemibold"
+                               TextColor="{StaticResource Primary}" />
+                        <Label Text="{Binding Insight}" Style="{StaticResource BodySecondary}" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <controls:BottomNavBar Grid.Row="1" ActiveTab="report" TabSelected="OnTabSelected" />
+    </Grid>
+</ContentPage>

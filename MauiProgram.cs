@@ -31,6 +31,7 @@ public static class MauiProgram
         builder.Services.AddTransient<CreateGoalViewModel>();
         builder.Services.AddTransient<GoalDetailViewModel>();
         builder.Services.AddTransient<TrackingViewModel>();
+        builder.Services.AddTransient<ReportViewModel>();
 
         // Pages
         builder.Services.AddTransient<LoginPage>();
@@ -41,6 +42,7 @@ public static class MauiProgram
         builder.Services.AddTransient<CreateGoalPage>();
         builder.Services.AddTransient<GoalDetailPage>();
         builder.Services.AddTransient<TrackingPage>();
+        builder.Services.AddTransient<ReportPage>();
 
         return builder.Build();
     }
