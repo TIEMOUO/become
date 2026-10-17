@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:controls="clr-namespace:Become.Controls"
+             xmlns:vm="clr-namespace:Become.ViewModels"
+             x:Class="Become.Views.CreateGoalPage"
+             x:DataType="vm:CreateGoalViewModel"
+             Shell.NavBarIsVisible="False"
+             ios:Page.UseSafeArea="True">
+
+    <Grid RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="24,16,24,24" Spacing="0">
+
+                <!-- Barre du haut : retour / annuler -->
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Border WidthRequest="48" HeightRequest="48"
+                            BackgroundColor="{StaticResource Surface}" StrokeThickness="0"
+                            SemanticProperties.Description="Retour">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CancelCommand}" />
+                        </Border.GestureRecognizers>
+                        <Label Text="←" FontSize="22" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <Label Grid.Column="2" Text="Annuler" Style="{StaticResource LinkLabel}"
+                           VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CancelCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+
+                <Label Text="Un nouvel objectif" Style="{StaticResource Title}"
+                       SemanticProperties.HeadingLevel="Level1" Margin="0,16,0,8" />
+                <Label Text="Commencez petit. Construisez dans la durée."
+                       Style="{StaticResource BodySecondary}" />
+
+                <VerticalStackLayout Spacing="20" Margin="0,24,0,0">
+
+                    <!-- Nom (obligatoire) -->
+                    <controls:FormField Title="Nom de l'objectif"
+                                        Placeholder="Ex. Apprendre l'espagnol"
+                                        Text="{Binding Title}"
+                                        ErrorMessage="{Binding TitleError}" />
+
+                    <!-- Pourquoi (facultatif) -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Pourquoi cet objectif ?" Style="{StaticResource FieldLabel}" />
+                        <Border Style="{StaticResource FieldBorder}">
+                            <Editor Text="{Binding Why}"
+                                    Placeholder="Ce qui vous motivera les jours difficiles (facultatif)"
+                                    PlaceholderColor="{StaticResource TextSecondary}"
+                                    TextColor="{StaticResource TextPrimary}"
+                                    FontFamily="InterRegular" FontSize="16"
+                                    BackgroundColor="Transparent"
+                                    AutoSize="TextChanges"
+                                    MinimumHeightRequest="88"
+                                    Margin="12,8" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Catégorie -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Catégorie" Style="{StaticResource FieldLabel}" />
+                        <Border Style="{StaticResource FieldBorder}" HeightRequest="56">
+                            <Picker ItemsSource="{Binding CategoryOptions}"
+                                    SelectedItem="{Binding Category}"
+                                    FontFamily="InterRegular" FontSize="16"
+                                    TextColor="{StaticResource TextPrimary}"
+                                    BackgroundColor="Transparent"
+                                    Margin="16,0" VerticalOptions="Center"
+                                    SemanticProperties.Description="Catégorie" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Fréquence -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="À quelle fréquence ?" Style="{StaticResource FieldLabel}" />
+                        <Border BackgroundColor="{StaticResource Stroke}" StrokeThickness="0" Padding="4">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+                            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="4">
+                                <Button Grid.Column="0" Text="Chaque jour"
+                                        Command="{Binding SetFrequencyCommand}" CommandParameter="daily"
+                                        Style="{StaticResource Segment}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsDaily}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button Grid.Column="1" Text="Par semaine"
+                                        Command="{Binding SetFrequencyCommand}" CommandParameter="weekly"
+                                        Style="{StaticResource Segment}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsWeekly}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button Grid.Column="2" Text="Libre"
+                                        Command="{Binding SetFrequencyCommand}" CommandParameter="free"
+                                        Style="{StaticResource Segment}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsFree}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+                                            <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <!-- Jours de la semaine (visibles seulement pour « Par semaine ») -->
+                        <FlexLayout IsVisible="{Binding IsWeekly}"
+                                    JustifyContent="SpaceBetween"
+                                    Margin="0,8,0,0"
+                                    BindableLayout.ItemsSource="{Binding DayChips}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="vm:DayChip">
+                                    <Border WidthRequest="44" HeightRequest="56"
+                                            BackgroundColor="{StaticResource Surface}"
+                                            StrokeThickness="0"
+                                            SemanticProperties.Description="{Binding Description}">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="16" />
+                                        </Border.StrokeShape>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnDayTapped" />
+                                        </Border.GestureRecognizers>
+                                        <Border.Triggers>
+                                            <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                            </DataTrigger>
+                                        </Border.Triggers>
+                                        <Label Text="{Binding Letter}" FontFamily="InterSemibold"
+                                               TextColor="{StaticResource TextSecondary}"
+                                               HorizontalOptions="Center" VerticalOptions="Center">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter Property="TextColor" Value="White" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </FlexLayout>
+
+                        <Label Text="{Binding DaysError}" IsVisible="{Binding HasDaysError}"
+                               Style="{StaticResource ErrorText}" />
+                        <Label Text="{Binding PlanText}" Style="{StaticResource Caption}" />
+                    </VerticalStackLayout>
+
+                    <!-- Durée + date cible -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Durée par séance" Style="{StaticResource FieldLabel}" />
+                            <Border Style="{StaticResource FieldBorder}" HeightRequest="56">
+                                <Picker ItemsSource="{Binding Durations}"
+                                        SelectedItem="{Binding Duration}"
+                                        FontFamily="InterRegular" FontSize="16"
+                                        TextColor="{StaticResource TextPrimary}"
+                                        BackgroundColor="Transparent"
+                                        Margin="16,0" VerticalOptions="Center"
+                                        SemanticProperties.Description="Durée par séance" />
+                            </Border>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="8">
+                            <Label Text="Date cible" Style="{StaticResource FieldLabel}" />
+                            <Border Style="{StaticResource FieldBorder}" HeightRequest="56">
+                                <DatePicker Date="{Binding TargetDate}"
+                                            MinimumDate="{Binding MinimumDate}"
+                                            Format="d MMM yyyy"
+                                            FontFamily="InterRegular" FontSize="16"
+                                            TextColor="{StaticResource TextPrimary}"
+                                            BackgroundColor="Transparent"
+                                            Margin="16,0" VerticalOptions="Center"
+                                            SemanticProperties.Description="Date cible" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+                    <Label Text="{Binding DateError}" IsVisible="{Binding HasDateError}"
+                           Style="{StaticResource ErrorText}" Margin="0,-12,0,0" />
+
+                    <!-- Rappel -->
+                    <Border Style="{StaticResource Card}" Padding="16">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                            <Label Text="🔔" FontSize="22" VerticalOptions="Center"
+                                   AutomationProperties.IsInAccessibleTree="False" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                <Label Text="{Binding ReminderTitle}" Style="{StaticResource CardTitle}"
+                                       FontSize="16" />
+                                <Label Text="Les jours de séance" Style="{StaticResource Caption}" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="2" IsToggled="{Binding ReminderEnabled}"
+                                    OnColor="{StaticResource Primary}"
+                                    SemanticProperties.Description="Activer le rappel" />
+                        </Grid>
+                    </Border>
+                    <TimePicker Time="{Binding ReminderTime}" IsVisible="{Binding ReminderEnabled}"
+                                Format="HH:mm"
+                                FontFamily="InterRegular" FontSize="16"
+                                TextColor="{StaticResource TextPrimary}"
+                                Margin="0,-8,0,0"
+                                SemanticProperties.Description="Heure du rappel" />
+
+                    <Button Text="{Binding ButtonText}"
+                            Command="{Binding SaveCommand}"
+                            Style="{StaticResource PrimaryButton}" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <controls:BottomNavBar Grid.Row="1" ActiveTab="goals" TabSelected="OnTabSelected" />
+    </Grid>
+</ContentPage>
