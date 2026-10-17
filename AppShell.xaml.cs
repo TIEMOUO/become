@@ -1,0 +1,14 @@
+using Become.Helpers;
+using Become.Views;
+
+namespace Become;
+
+public partial class AppShell : Shell
+{
+    public AppShell()
+    {
+        InitializeComponent();
+
+        // Pages empilées (le bouton retour système est géré par Shell)
+    }
+}
