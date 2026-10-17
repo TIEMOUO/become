@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:controls="clr-namespace:Become.Controls"
+             xmlns:helpers="clr-namespace:Become.Helpers"
+             xmlns:vm="clr-namespace:Become.ViewModels"
+             x:Class="Become.Views.RegisterPage"
+             x:DataType="vm:RegisterViewModel"
+             Shell.NavBarIsVisible="False"
+             ios:Page.UseSafeArea="True">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,16,24,24" Spacing="0">
+
+            <Image Source="become_logo.png"
+                   HeightRequest="130"
+                   HorizontalOptions="Center"
+                   Aspect="AspectFit"
+                   SemanticProperties.Description="Logo Become" />
+
+            <Label Text="Votre prochain chapitre."
+                   Style="{StaticResource Title}"
+                   SemanticProperties.HeadingLevel="Level1"
+                   Margin="0,24,0,8" />
+
+            <Label Text="Créez votre compte et avancez à votre rythme."
+                   Style="{StaticResource BodySecondary}" />
+
+            <!-- Erreur globale (réseau, serveur) -->
+            <Border IsVisible="{Binding HasGlobalError}"
+                    BackgroundColor="{StaticResource ErrorTint}"
+                    StrokeThickness="0"
+                    Padding="16,12"
+                    Margin="0,24,0,0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <Label Text="{Binding GlobalError}" Style="{StaticResource ErrorText}" />
+            </Border>
+
+            <VerticalStackLayout Spacing="20" Margin="0,24,0,0">
+                <controls:FormField Title="Prénom"
+                                    Icon="{x:Static helpers:Icons.User}"
+                                    Placeholder="Votre prénom"
+                                    Text="{Binding FirstName}"
+                                    ErrorMessage="{Binding FirstNameError}" />
+
+                <controls:FormField Title="Adresse e-mail"
+                                    Icon="{x:Static helpers:Icons.Mail}"
+                                    Placeholder="vous@exemple.com"
+                                    InputKeyboard="Email"
+                                    Text="{Binding Email}"
+                                    ErrorMessage="{Binding EmailError}" />
+
+                <VerticalStackLayout Spacing="8">
+                    <controls:FormField Title="Mot de passe"
+                                        Icon="{x:Static helpers:Icons.Lock}"
+                                        Placeholder="8 caractères minimum"
+                                        IsPassword="True"
+                                        Text="{Binding Password}"
+                                        ErrorMessage="{Binding PasswordError}" />
+
+                    <!-- Aide en temps réel : texte + symbole, jamais la couleur seule -->
+                    <Label Text="{Binding PasswordHint}"
+                           Style="{StaticResource Caption}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsPasswordOk}" Value="True">
+                                <Setter Property="TextColor" Value="{StaticResource Success}" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsPasswordWeak}" Value="True">
+                                <Setter Property="TextColor" Value="{StaticResource Warning}" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <!-- Conditions d'utilisation -->
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" Margin="0,16,0,0">
+                <CheckBox Grid.Column="0"
+                          IsChecked="{Binding AcceptTerms}"
+                          Color="{StaticResource Primary}"
+                          VerticalOptions="Start"
+                          SemanticProperties.Description="J'accepte les conditions d'utilisation et la politique de confidentialité" />
+
+                <Label Grid.Column="1" VerticalOptions="Center" FontSize="15">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="J'accepte les "
+                                  TextColor="{StaticResource TextSecondary}" />
+                            <Span Text="conditions d'utilisation"
+                                  TextColor="{StaticResource Primary}">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTermsTapped" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                            <Span Text=" et la "
+                                  TextColor="{StaticResource TextSecondary}" />
+                            <Span Text="politique de confidentialité"
+                                  TextColor="{StaticResource Primary}">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnPrivacyTapped" />
+                                </Span.GestureRecognizers>
+                            </Span>
+                            <Span Text="." TextColor="{StaticResource TextSecondary}" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+
+            <Label Text="{Binding TermsError}"
+                   IsVisible="{Binding HasTermsError}"
+                   Style="{StaticResource ErrorText}"
+                   Margin="0,4,0,0" />
+
+            <Button Text="{Binding ButtonText}"
+                    Command="{Binding RegisterCommand}"
+                    Style="{StaticResource PrimaryButton}"
+                    Margin="0,24,0,0" />
+
+            <Label HorizontalOptions="Center" Margin="0,24,0,0" Padding="0,8">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Déjà un compte ?  "
+                              TextColor="{StaticResource TextSecondary}" />
+                        <Span Text="Se connecter"
+                              FontFamily="InterSemibold"
+                              TextColor="{StaticResource Primary}" />
+                    </FormattedString>
+                </Label.FormattedText>
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackToLoginCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Text="Pas besoin d'être parfait. Juste de commencer."
+                   Style="{StaticResource Caption}"
+                   TextColor="{StaticResource Primary}"
+                   HorizontalOptions="Center"
+                   Margin="0,8,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

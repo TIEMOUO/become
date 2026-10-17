@@ -10,5 +10,6 @@ public partial class AppShell : Shell
         InitializeComponent();
 
         // Pages empilées (le bouton retour système est géré par Shell)
+        Routing.RegisterRoute(AppNavigator.RegisterRoute, typeof(RegisterPage));
     }
 }
