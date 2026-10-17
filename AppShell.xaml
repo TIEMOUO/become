@@ -12,4 +12,5 @@
     <ShellContent Route="login" ContentTemplate="{DataTemplate views:LoginPage}" />
 
     <!-- Application : 4 destinations de la barre de navigation -->
+    <ShellContent Route="home" ContentTemplate="{DataTemplate views:HomePage}" />
 </Shell>
