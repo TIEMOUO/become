@@ -14,4 +14,5 @@
     <!-- Application : 4 destinations de la barre de navigation -->
     <ShellContent Route="home" ContentTemplate="{DataTemplate views:HomePage}" />
     <ShellContent Route="goals" ContentTemplate="{DataTemplate views:GoalsPage}" />
+    <ShellContent Route="tracking" ContentTemplate="{DataTemplate views:TrackingPage}" />
 </Shell>
