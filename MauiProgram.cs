@@ -27,12 +27,14 @@ public static class MauiProgram
         builder.Services.AddTransient<RegisterViewModel>();
         builder.Services.AddTransient<ForgotPasswordViewModel>();
         builder.Services.AddTransient<HomeViewModel>();
+        builder.Services.AddTransient<GoalsViewModel>();
 
         // Pages
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<RegisterPage>();
         builder.Services.AddTransient<ForgotPasswordPage>();
         builder.Services.AddTransient<HomePage>();
+        builder.Services.AddTransient<GoalsPage>();
 
         return builder.Build();
     }
