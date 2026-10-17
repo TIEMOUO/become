@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="456" height="456" viewBox="0 0 456 456" version="1.1">
+    <rect x="128" y="128" width="200" height="200" rx="44" fill="#5B4BDB" />
+    <path fill="#FFFFFF" d="M185 170 H245 C270 170 285 185 285 205 C285 220 277 230 265 235 C282 240 292 252 292 270 C292 292 275 306 247 306 H185 Z M213 193 V227 H240 C251 227 257 222 257 210 C257 198 251 193 240 193 Z M213 249 V283 H244 C257 283 264 277 264 266 C264 255 257 249 244 249 Z" fill-rule="evenodd" />
+</svg>
