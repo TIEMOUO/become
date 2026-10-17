@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             x:Class="Become.Controls.FormField"
+             x:Name="Root">
+
+    <VerticalStackLayout Spacing="8">
+
+        <Label Text="{Binding Title, Source={x:Reference Root}}"
+               Style="{StaticResource FieldLabel}" />
+
+        <!-- États : normal / focus / erreur gérés dans FormField.xaml.cs -->
+        <Border x:Name="FieldFrame"
+                BackgroundColor="{StaticResource Surface}"
+                Stroke="{StaticResource Stroke}"
+                StrokeThickness="1.5"
+                HeightRequest="56">
+            <Border.StrokeShape>
+                <shapes:RoundRectangle CornerRadius="20" />
+            </Border.StrokeShape>
+
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" Padding="16,0">
+                <Label Grid.Column="0"
+                       Text="{Binding Icon, Source={x:Reference Root}}"
+                       FontSize="18"
+                       TextColor="{StaticResource TextSecondary}"
+                       VerticalOptions="Center"
+                       AutomationProperties.IsInAccessibleTree="False" />
+
+                <Entry x:Name="Input"
+                       Grid.Column="1"
+                       Text="{Binding Text, Source={x:Reference Root}, Mode=TwoWay}"
+                       Placeholder="{Binding Placeholder, Source={x:Reference Root}}"
+                       Keyboard="{Binding InputKeyboard, Source={x:Reference Root}}"
+                       SemanticProperties.Description="{Binding Title, Source={x:Reference Root}}"
+                       BackgroundColor="Transparent"
+                       FontFamily="InterRegular"
+                       FontSize="16"
+                       TextColor="{StaticResource TextPrimary}"
+                       PlaceholderColor="{StaticResource TextSecondary}"
+                       VerticalOptions="Center"
+                       Focused="OnFocused"
+                       Unfocused="OnUnfocused" />
+
+                <Label x:Name="RevealLabel"
+                       Grid.Column="2"
+                       Text="Afficher"
+                       IsVisible="False"
+                       FontFamily="InterSemibold"
+                       FontSize="14"
+                       TextColor="{StaticResource Primary}"
+                       Padding="8"
+                       VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRevealTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+        </Border>
+
+        <Label x:Name="ErrorLabel"
+               Text="{Binding ErrorMessage, Source={x:Reference Root}}"
+               Style="{StaticResource ErrorText}"
+               IsVisible="False"
+               SemanticProperties.HeadingLevel="None" />
+    </VerticalStackLayout>
+</ContentView>
