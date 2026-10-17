@@ -13,5 +13,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(AppNavigator.RegisterRoute, typeof(RegisterPage));
         Routing.RegisterRoute(AppNavigator.ForgotRoute, typeof(ForgotPasswordPage));
         Routing.RegisterRoute(AppNavigator.CreateRoute, typeof(CreateGoalPage));
+        Routing.RegisterRoute(AppNavigator.DetailRoute, typeof(GoalDetailPage));
     }
 }

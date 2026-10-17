@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:controls="clr-namespace:Become.Controls"
+             xmlns:helpers="clr-namespace:Become.Helpers"
+             xmlns:vm="clr-namespace:Become.ViewModels"
+             x:Class="Become.Views.GoalDetailPage"
+             x:DataType="vm:GoalDetailViewModel"
+             Shell.NavBarIsVisible="False"
+             ios:Page.UseSafeArea="True">
+
+    <Grid RowDefinitions="*,Auto,Auto">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="24,16,24,24" Spacing="24">
+
+                <!-- Barre du haut -->
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Border WidthRequest="48" HeightRequest="48"
+                            BackgroundColor="{StaticResource Surface}" StrokeThickness="0"
+                            SemanticProperties.Description="Retour">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackCommand}" />
+                        </Border.GestureRecognizers>
+                        <Label Text="←" FontSize="22" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <Label Grid.Column="2" Text="Modifier" Style="{StaticResource LinkLabel}"
+                           VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding MoreCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding Title}" Style="{StaticResource Title}"
+                           SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="{Binding Subtitle}" Style="{StaticResource BodySecondary}" />
+                </VerticalStackLayout>
+
+                <!-- Progression -->
+                <Border Style="{StaticResource Card}" Padding="24">
+                    <VerticalStackLayout Spacing="16">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="20">
+                            <controls:ProgressRing Progress="{Binding Progress}" Caption="réalisé"
+                                                   WidthRequest="124" HeightRequest="124" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                                <Border Style="{StaticResource Badge}" HorizontalOptions="Start"
+                                        BackgroundColor="{StaticResource PrimaryTint}">
+                                    <Label Text="{Binding StatusText}" FontFamily="InterSemibold" FontSize="14"
+                                           TextColor="{StaticResource Primary}" />
+                                </Border>
+                                <Label Text="{Binding CountText}" FontFamily="InterBold" FontSize="28" />
+                                <Label Text="{Binding RemainingText}" Style="{StaticResource Caption}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                        <Label Text="{Binding WhyQuote}" IsVisible="{Binding HasWhy}"
+                               Style="{StaticResource BodySecondary}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Régularité -->
+                <HorizontalStackLayout Spacing="16">
+                    <Label Text="{x:Static helpers:Icons.Flame}" FontSize="28" VerticalOptions="Center" />
+                    <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                        <Label Text="{Binding StreakText}" Style="{StaticResource CardTitle}" />
+                        <Label Text="{Binding BestStreakText}" Style="{StaticResource Caption}" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <!-- Jalons -->
+                <VerticalStackLayout Spacing="16" IsVisible="{Binding HasMilestones}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Vos jalons" Style="{StaticResource SectionTitle}"
+                               SemanticProperties.HeadingLevel="Level2" />
+                        <Label Grid.Column="1" Text="{Binding MilestonesCounter}"
+                               FontFamily="InterSemibold" FontSize="14"
+                               TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    </Grid>
+                    <Border Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="20" BindableLayout.ItemsSource="{Binding Milestones}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="vm:MilestoneItem">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                                        <!-- Le symbole change (○ / ✓) : l'état n'est pas porté par la couleur seule -->
+                                        <Label Text="○" FontSize="24" TextColor="{StaticResource TextSecondary}"
+                                               VerticalOptions="Start">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsReached}" Value="True">
+                                                    <Setter Property="Text" Value="✓" />
+                                                    <Setter Property="TextColor" Value="{StaticResource Primary}" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                            <Label Text="{Binding Title}" Style="{StaticResource CardTitle}" FontSize="17" />
+                                            <Label Text="{Binding Detail}" Style="{StaticResource Caption}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Dernières séances -->
+                <VerticalStackLayout Spacing="16">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Dernières séances" Style="{StaticResource SectionTitle}"
+                               SemanticProperties.HeadingLevel="Level2" />
+                        <Label Grid.Column="1" Text="{Binding ToggleSessionsText}"
+                               IsVisible="{Binding CanToggleSessions}"
+                               FontFamily="InterSemibold" FontSize="14"
+                               TextColor="{StaticResource Primary}" Padding="0,8" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleSessionsCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+                    <!-- État vide -->
+                    <Label IsVisible="{Binding HasNoSessions}"
+                           Text="Aucune séance pour l'instant. Validez la première quand vous êtes prêt."
+                           Style="{StaticResource BodySecondary}" />
+
+                    <VerticalStackLayout Spacing="14" BindableLayout.ItemsSource="{Binding Sessions}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SessionItem">
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                    <Label Text="✓" TextColor="{StaticResource Success}" FontFamily="InterBold"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Text="{Binding Label}" VerticalOptions="Center" />
+                                    <Label Grid.Column="2" Text="{Binding Detail}" Style="{StaticResource Caption}"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Rappel -->
+                <Border Style="{StaticResource Card}" Padding="16">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Label Text="🔔" FontSize="22" VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False" />
+                        <Label Grid.Column="1" Text="{Binding ReminderText}" VerticalOptions="Center" />
+                        <Switch Grid.Column="2" IsToggled="{Binding ReminderEnabled}"
+                                OnColor="{StaticResource Primary}"
+                                SemanticProperties.Description="Activer le rappel" />
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Retour d'action (disparaît seul) + action principale, toujours à portée du pouce -->
+        <VerticalStackLayout Grid.Row="1" Padding="24,8,24,12" Spacing="8">
+            <Border IsVisible="{Binding HasFeedback}"
+                    BackgroundColor="{StaticResource PrimaryTint}" StrokeThickness="0" Padding="16,12"
+                    SemanticProperties.Description="{Binding Feedback}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <Label Text="{Binding Feedback}" FontFamily="InterSemibold"
+                       TextColor="{StaticResource PrimaryDark}" />
+            </Border>
+
+            <Button Text="✓  Valider ma séance du jour"
+                    Command="{Binding ValidateCommand}"
+                    IsVisible="{Binding CanValidate}"
+                    Style="{StaticResource PrimaryButton}" />
+
+            <Button Text="✓  Séance du jour validée · Annuler"
+                    Command="{Binding ValidateCommand}"
+                    IsVisible="{Binding IsValidatedToday}"
+                    Style="{StaticResource SecondaryButton}" />
+        </VerticalStackLayout>
+
+        <controls:BottomNavBar Grid.Row="2" ActiveTab="goals" TabSelected="OnTabSelected" />
+    </Grid>
+</ContentPage>
