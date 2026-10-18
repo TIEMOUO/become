@@ -18,7 +18,7 @@
     <Style x:Key="Title" TargetType="Label">
         <Setter Property="FontFamily" Value="InterBold" />
         <Setter Property="FontSize" Value="28" />
-        <Setter Property="TextColor" Value="{StaticResource PrimaryDark}" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
     </Style>
 
     <!-- H2 : 22 Semibold -->
@@ -57,15 +57,15 @@
 
     <Style x:Key="FieldLabel" TargetType="Label">
         <Setter Property="FontFamily" Value="InterSemibold" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
     </Style>
 
     <Style x:Key="LinkLabel" TargetType="Label">
         <Setter Property="FontFamily" Value="InterSemibold" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="TextColor" Value="{StaticResource Primary}" />
-        <Setter Property="Padding" Value="0,8" />
+        <Setter Property="Padding" Value="0,10" />
     </Style>
 
     <Style x:Key="ErrorText" TargetType="Label">
@@ -79,8 +79,8 @@
         <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
         <Setter Property="TextColor" Value="White" />
         <Setter Property="FontFamily" Value="InterSemibold" />
-        <Setter Property="FontSize" Value="17" />
-        <Setter Property="CornerRadius" Value="28" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="CornerRadius" Value="16" />
         <Setter Property="HeightRequest" Value="56" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -110,10 +110,10 @@
         <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
         <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
         <Setter Property="BorderColor" Value="{StaticResource Stroke}" />
-        <Setter Property="BorderWidth" Value="1.5" />
+        <Setter Property="BorderWidth" Value="1" />
         <Setter Property="FontFamily" Value="InterSemibold" />
-        <Setter Property="FontSize" Value="17" />
-        <Setter Property="CornerRadius" Value="28" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="CornerRadius" Value="16" />
         <Setter Property="HeightRequest" Value="56" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -140,10 +140,10 @@
         <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="Padding" Value="20" />
         <Setter Property="StrokeShape">
-            <shapes:RoundRectangle CornerRadius="24" />
+            <shapes:RoundRectangle CornerRadius="20" />
         </Setter>
         <Setter Property="Shadow">
-            <Shadow Brush="{StaticResource TextPrimary}" Opacity="0.06" Radius="16" Offset="0,4" />
+            <Shadow Brush="{StaticResource TextPrimary}" Opacity="0.05" Radius="24" Offset="0,8" />
         </Setter>
     </Style>
 
@@ -183,7 +183,7 @@
         <Setter Property="Stroke" Value="{StaticResource Stroke}" />
         <Setter Property="StrokeThickness" Value="1.5" />
         <Setter Property="StrokeShape">
-            <shapes:RoundRectangle CornerRadius="20" />
+            <shapes:RoundRectangle CornerRadius="16" />
         </Setter>
     </Style>
 
@@ -199,5 +199,19 @@
     <Style x:Key="Divider" TargetType="BoxView">
         <Setter Property="HeightRequest" Value="1" />
         <Setter Property="Color" Value="{StaticResource Stroke}" />
+    </Style>
+
+    <!-- ===== Icônes vectorielles (police MaterialIcons) ===== -->
+    <Style x:Key="IconLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="MaterialIcons" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="TextColor" Value="{StaticResource TextSecondary}" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+
+    <!-- Carte des écrans d'authentification : même langage que les cartes, un peu plus d'air -->
+    <Style x:Key="AuthCard" TargetType="Border" BasedOn="{StaticResource Card}">
+        <Setter Property="Padding" Value="24" />
     </Style>
 </ResourceDictionary>
