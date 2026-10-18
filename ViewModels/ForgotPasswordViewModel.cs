@@ -51,9 +51,21 @@ public class ForgotPasswordViewModel : BaseViewModel
     public bool IsSent
     {
         get => _isSent;
-        private set { if (SetProperty(ref _isSent, value)) OnPropertyChanged(nameof(IsNotSent)); }
+        private set
+        {
+            if (!SetProperty(ref _isSent, value)) return;
+            OnPropertyChanged(nameof(IsNotSent));
+            OnPropertyChanged(nameof(HeaderTitle));
+            OnPropertyChanged(nameof(HeaderSubtitle));
+        }
     }
     public bool IsNotSent => !IsSent;
+
+    // En-tête : change quand le lien a été envoyé
+    public string HeaderTitle => IsSent ? "Vérifiez votre boîte mail" : "Mot de passe oublié ?";
+    public string HeaderSubtitle => IsSent
+        ? "Nous venons de vous envoyer un lien de réinitialisation."
+        : "Indiquez l'adresse e-mail associée à votre compte. Nous vous enverrons un lien pour le réinitialiser.";
 
     public string SentMessage => $"Si un compte existe pour {Email.Trim()}, vous recevrez un lien de réinitialisation dans quelques instants.";
 
