@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Become.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>

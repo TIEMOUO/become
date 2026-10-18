@@ -16,6 +16,7 @@ public static class MauiProgram
                 fonts.AddFont("Inter-Regular.ttf", "InterRegular");
                 fonts.AddFont("Inter-SemiBold.ttf", "InterSemibold");
                 fonts.AddFont("Inter-Bold.ttf", "InterBold");
+                fonts.AddFont("MaterialIconsRound-Subset.otf", "MaterialIcons");   // icônes vectorielles
             });
 
         // Services

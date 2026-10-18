@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">$(TargetFrameworks);net8.0-ios</TargetFrameworks>
+		<TargetFrameworks>net10.0-android</TargetFrameworks>
 
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Become</RootNamespace>
@@ -16,16 +15,12 @@
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- Icône et écran de démarrage (remplace par tes exports Figma si tu veux) -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#5B4BDB" />
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#F8F9FC" BaseSize="128,128" />
-
-		<!-- Images (logo) et polices (Inter) -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiFont Include="Resources\Fonts\*" />
 	</ItemGroup>
