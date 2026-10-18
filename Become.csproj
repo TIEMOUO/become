@@ -25,4 +25,22 @@
 		<MauiFont Include="Resources\Fonts\*" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Controls\InlineBanner.xaml.cs">
+	    <DependentUpon>InlineBanner.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Controls\AuthHeader.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\FieldError.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\InlineBanner.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

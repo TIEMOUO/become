@@ -5,10 +5,12 @@ namespace Become.Controls;
 public partial class FormField : ContentView
 {
     public static readonly BindableProperty TitleProperty =
-        BindableProperty.Create(nameof(Title), typeof(string), typeof(FormField), string.Empty);
+        BindableProperty.Create(nameof(Title), typeof(string), typeof(FormField), string.Empty,
+            propertyChanged: (b, _, _) => ((FormField)b).ApplyHeader());
 
     public static readonly BindableProperty IconProperty =
-        BindableProperty.Create(nameof(Icon), typeof(string), typeof(FormField), string.Empty);
+        BindableProperty.Create(nameof(Icon), typeof(string), typeof(FormField), string.Empty,
+            propertyChanged: (b, _, _) => ((FormField)b).ApplyHeader());
 
     public static readonly BindableProperty PlaceholderProperty =
         BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(FormField), string.Empty);
@@ -34,6 +36,7 @@ public partial class FormField : ContentView
     public FormField()
     {
         InitializeComponent();
+        ApplyHeader();
         ApplyMask();
         ApplyState();
     }
@@ -46,12 +49,21 @@ public partial class FormField : ContentView
     public string ErrorMessage { get => (string)GetValue(ErrorMessageProperty); set => SetValue(ErrorMessageProperty, value); }
     public Keyboard InputKeyboard { get => (Keyboard)GetValue(InputKeyboardProperty); set => SetValue(InputKeyboardProperty, value); }
 
+    private void ApplyHeader()
+    {
+        if (Input is null) return;
+        TitleLabel.IsVisible = !string.IsNullOrEmpty(Title);
+        IconLabel.IsVisible = !string.IsNullOrEmpty(Icon);
+    }
+
     private void ApplyMask()
     {
         if (Input is null) return;
         Input.IsPassword = IsPassword && !_revealed;
         RevealLabel.IsVisible = IsPassword;
-        RevealLabel.Text = _revealed ? "Masquer" : "Afficher";
+        RevealLabel.Text = _revealed ? AppIcons.VisibilityOff : AppIcons.Visibility;
+        SemanticProperties.SetDescription(RevealLabel,
+            _revealed ? "Masquer le mot de passe" : "Afficher le mot de passe");
     }
 
     private void ApplyState()
@@ -59,12 +71,14 @@ public partial class FormField : ContentView
         if (FieldFrame is null) return;
 
         var hasError = !string.IsNullOrEmpty(ErrorMessage);
-        ErrorLabel.IsVisible = hasError;
 
-        // Erreur > focus > normal
         FieldFrame.Stroke = hasError ? AppColors.Error
                           : _focused ? AppColors.Primary
                           : AppColors.Stroke;
+
+        IconLabel.TextColor = hasError ? AppColors.Error
+                            : _focused ? AppColors.Primary
+                            : AppColors.TextMuted;
     }
 
     private void OnFocused(object? sender, FocusEventArgs e)
