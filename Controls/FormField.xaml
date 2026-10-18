@@ -2,30 +2,33 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+             xmlns:controls="clr-namespace:Become.Controls"
              x:Class="Become.Controls.FormField"
              x:Name="Root">
 
     <VerticalStackLayout Spacing="8">
 
-        <Label Text="{Binding Title, Source={x:Reference Root}}"
-               Style="{StaticResource FieldLabel}" />
+        <Label x:Name="TitleLabel"
+               Text="{Binding Title, Source={x:Reference Root}}"
+               Style="{StaticResource FieldLabel}"
+               IsVisible="False" />
 
-        <!-- États : normal / focus / erreur gérés dans FormField.xaml.cs -->
         <Border x:Name="FieldFrame"
                 BackgroundColor="{StaticResource Surface}"
                 Stroke="{StaticResource Stroke}"
                 StrokeThickness="1.5"
-                HeightRequest="56">
+                HeightRequest="54">
             <Border.StrokeShape>
-                <shapes:RoundRectangle CornerRadius="20" />
+                <shapes:RoundRectangle CornerRadius="16" />
             </Border.StrokeShape>
 
-            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" Padding="16,0">
-                <Label Grid.Column="0"
+            <Grid ColumnDefinitions="Auto,*,Auto" Padding="16,0,6,0">
+                <Label x:Name="IconLabel"
                        Text="{Binding Icon, Source={x:Reference Root}}"
-                       FontSize="18"
-                       TextColor="{StaticResource TextSecondary}"
-                       VerticalOptions="Center"
+                       Style="{StaticResource IconLabel}"
+                       TextColor="{StaticResource TextMuted}"
+                       Margin="0,0,12,0"
+                       IsVisible="False"
                        AutomationProperties.IsInAccessibleTree="False" />
 
                 <Entry x:Name="Input"
@@ -38,19 +41,17 @@
                        FontFamily="InterRegular"
                        FontSize="16"
                        TextColor="{StaticResource TextPrimary}"
-                       PlaceholderColor="{StaticResource TextSecondary}"
+                       PlaceholderColor="{StaticResource TextMuted}"
                        VerticalOptions="Center"
                        Focused="OnFocused"
                        Unfocused="OnUnfocused" />
 
                 <Label x:Name="RevealLabel"
                        Grid.Column="2"
-                       Text="Afficher"
+                       Style="{StaticResource IconLabel}"
+                       WidthRequest="44"
+                       HeightRequest="44"
                        IsVisible="False"
-                       FontFamily="InterSemibold"
-                       FontSize="14"
-                       TextColor="{StaticResource Primary}"
-                       Padding="8"
                        VerticalOptions="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnRevealTapped" />
@@ -59,10 +60,6 @@
             </Grid>
         </Border>
 
-        <Label x:Name="ErrorLabel"
-               Text="{Binding ErrorMessage, Source={x:Reference Root}}"
-               Style="{StaticResource ErrorText}"
-               IsVisible="False"
-               SemanticProperties.HeadingLevel="None" />
+        <controls:FieldError Message="{Binding ErrorMessage, Source={x:Reference Root}}" />
     </VerticalStackLayout>
 </ContentView>

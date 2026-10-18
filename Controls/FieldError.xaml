@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:Become.Helpers"
+             x:Class="Become.Controls.FieldError"
+             x:Name="Root"
+             IsVisible="False">
+
+    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+        <Label Text="{x:Static helpers:AppIcons.Error}"
+               Style="{StaticResource IconLabel}"
+               FontSize="16"
+               TextColor="{StaticResource Error}"
+               VerticalOptions="Start"
+               Margin="0,1,0,0"
+               AutomationProperties.IsInAccessibleTree="False" />
+        <Label Grid.Column="1"
+               Text="{Binding Message, Source={x:Reference Root}}"
+               Style="{StaticResource ErrorText}" />
+    </Grid>
+</ContentView>
