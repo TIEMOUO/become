@@ -57,7 +57,7 @@ public class LoginViewModel : BaseViewModel
         }
     }
 
-    public string ButtonText => IsBusy ? "Connexion en cours…" : $"{Icons.Arrow}  Se connecter";
+    public string ButtonText => IsBusy ? "Connexion en cours…" : "Se connecter";
 
     public ICommand LoginCommand { get; }
     public ICommand RegisterCommand { get; }

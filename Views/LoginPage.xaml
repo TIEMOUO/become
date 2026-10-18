@@ -11,79 +11,64 @@
              ios:Page.UseSafeArea="True">
 
     <ScrollView>
-        <VerticalStackLayout Padding="24,16,24,24" Spacing="0">
+        <VerticalStackLayout Padding="20,32,20,24" Spacing="0">
 
-            <!-- Logo (PNG transparent : Resources/Images/become_logo.png) -->
-            <Image Source="become_logo.png"
-                   HeightRequest="150"
-                   HorizontalOptions="Center"
-                   Aspect="AspectFit"
-                   SemanticProperties.Description="Logo Become" />
+            <controls:AuthHeader Title="Heureux de vous revoir."
+                                 Subtitle="Un petit pas aujourd'hui. Un grand changement demain." />
 
-            <Label Text="Heureux de vous revoir."
-                   Style="{StaticResource Title}"
-                   SemanticProperties.HeadingLevel="Level1"
-                   Margin="0,24,0,8" />
+            <!-- Formulaire dans une carte : même langage visuel que le reste de l'application -->
+            <Border Style="{StaticResource AuthCard}" Margin="0,32,0,0">
+                <VerticalStackLayout Spacing="20">
 
-            <Label Text="Un petit pas aujourd'hui. Un grand changement demain."
-                   Style="{StaticResource BodySecondary}" />
+                    <!-- Erreur globale (identifiants invalides, réseau) -->
+                    <controls:InlineBanner Kind="Error"
+                                           Message="{Binding GlobalError}"
+                                           IsVisible="{Binding HasGlobalError}" />
 
-            <!-- Erreur globale (identifiants invalides, réseau) -->
-            <Border IsVisible="{Binding HasGlobalError}"
-                    BackgroundColor="{StaticResource ErrorTint}"
-                    StrokeThickness="0"
-                    Padding="16,12"
-                    Margin="0,24,0,0">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
-                </Border.StrokeShape>
-                <Label Text="{Binding GlobalError}"
-                       Style="{StaticResource ErrorText}"
-                       SemanticProperties.Description="{Binding GlobalError}" />
+                    <controls:FormField Title="Adresse e-mail"
+                                        Icon="{x:Static helpers:AppIcons.Mail}"
+                                        Placeholder="vous@exemple.com"
+                                        InputKeyboard="Email"
+                                        Text="{Binding Email}"
+                                        ErrorMessage="{Binding EmailError}" />
+
+                    <VerticalStackLayout Spacing="2">
+                        <controls:FormField Title="Mot de passe"
+                                            Icon="{x:Static helpers:AppIcons.Lock}"
+                                            Placeholder="Votre mot de passe"
+                                            IsPassword="True"
+                                            Text="{Binding Password}"
+                                            ErrorMessage="{Binding PasswordError}" />
+
+                        <Label Text="Mot de passe oublié ?"
+                               Style="{StaticResource LinkLabel}"
+                               HorizontalOptions="End"
+                               SemanticProperties.Description="Mot de passe oublié ? Ouvrir la récupération">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </VerticalStackLayout>
+
+                    <Button Text="{Binding ButtonText}"
+                            Command="{Binding LoginCommand}"
+                            Style="{StaticResource PrimaryButton}" />
+
+                    <!-- Séparateur -->
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="16">
+                        <BoxView Grid.Column="0" Style="{StaticResource Divider}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="ou" Style="{StaticResource Caption}" />
+                        <BoxView Grid.Column="2" Style="{StaticResource Divider}" VerticalOptions="Center" />
+                    </Grid>
+
+                    <Button Text="Continuer avec Apple"
+                            Command="{Binding AppleCommand}"
+                            Style="{StaticResource SecondaryButton}" />
+                </VerticalStackLayout>
             </Border>
 
-            <VerticalStackLayout Spacing="20" Margin="0,24,0,0">
-                <controls:FormField Title="Adresse e-mail"
-                                    Icon="{x:Static helpers:Icons.Mail}"
-                                    Placeholder="vous@exemple.com"
-                                    InputKeyboard="Email"
-                                    Text="{Binding Email}"
-                                    ErrorMessage="{Binding EmailError}" />
-
-                <controls:FormField Title="Mot de passe"
-                                    Icon="{x:Static helpers:Icons.Lock}"
-                                    Placeholder="Votre mot de passe"
-                                    IsPassword="True"
-                                    Text="{Binding Password}"
-                                    ErrorMessage="{Binding PasswordError}" />
-            </VerticalStackLayout>
-
-            <Label Text="Mot de passe oublié ?"
-                   Style="{StaticResource LinkLabel}"
-                   HorizontalOptions="End"
-                   Margin="0,8,0,16"
-                   SemanticProperties.Description="Mot de passe oublié ? Ouvrir la récupération">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
-
-            <Button Text="{Binding ButtonText}"
-                    Command="{Binding LoginCommand}"
-                    Style="{StaticResource PrimaryButton}" />
-
-            <!-- Séparateur -->
-            <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="16" Margin="0,24">
-                <BoxView Grid.Column="0" Style="{StaticResource Divider}" VerticalOptions="Center" />
-                <Label Grid.Column="1" Text="ou" Style="{StaticResource BodySecondary}" />
-                <BoxView Grid.Column="2" Style="{StaticResource Divider}" VerticalOptions="Center" />
-            </Grid>
-
-            <Button Text="Continuer avec Apple"
-                    Command="{Binding AppleCommand}"
-                    Style="{StaticResource SecondaryButton}" />
-
-            <Label HorizontalOptions="Center" Margin="0,24,0,0" Padding="0,8">
+            <!-- Accès à l'inscription -->
+            <Label HorizontalOptions="Center" Margin="0,16,0,0" Padding="0,12">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Nouveau sur Become ?  "
@@ -98,10 +83,16 @@
                 </Label.GestureRecognizers>
             </Label>
 
-            <Label Text="🛡  Vos objectifs restent personnels."
-                   Style="{StaticResource Caption}"
-                   HorizontalOptions="Center"
-                   Margin="0,8,0,0" />
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="6" Margin="0,8,0,0">
+                <Label Text="{x:Static helpers:AppIcons.Shield}"
+                       Style="{StaticResource IconLabel}"
+                       FontSize="16"
+                       TextColor="{StaticResource TextMuted}"
+                       AutomationProperties.IsInAccessibleTree="False" />
+                <Label Text="Vos objectifs restent personnels."
+                       Style="{StaticResource Caption}"
+                       VerticalOptions="Center" />
+            </HorizontalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
