@@ -117,7 +117,7 @@ public class RegisterViewModel : BaseViewModel
         }
     }
 
-    public string ButtonText => IsBusy ? "Création en cours…" : $"{Icons.Arrow}  Créer mon compte";
+    public string ButtonText => IsBusy ? "Création en cours…" : "Créer mon compte";
 
     public ICommand RegisterCommand { get; }
     public ICommand BackToLoginCommand { get; }
