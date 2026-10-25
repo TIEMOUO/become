@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Become.Views.WelcomePage"
+             Style="{StaticResource BcPage}"
+             Title="Bienvenue">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0.4,1">
+                <GradientStop Color="{StaticResource BcNight}" Offset="0.0" />
+                <GradientStop Color="{StaticResource BcNightDeep}" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- Halos lumineux de fond -->
+        <Ellipse InputTransparent="True" WidthRequest="360" HeightRequest="360"
+                 HorizontalOptions="End" VerticalOptions="Start"
+                 TranslationX="130" TranslationY="-100">
+            <Ellipse.Fill>
+                <RadialGradientBrush Center="0.5,0.5" Radius="0.5">
+                    <GradientStop Color="{StaticResource BcGlowVioletSoft}" Offset="0.0" />
+                    <GradientStop Color="{StaticResource BcGlowVioletFade}" Offset="1.0" />
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+        <Ellipse InputTransparent="True" WidthRequest="320" HeightRequest="320"
+                 HorizontalOptions="Start" VerticalOptions="End"
+                 TranslationX="-130" TranslationY="120">
+            <Ellipse.Fill>
+                <RadialGradientBrush Center="0.5,0.5" Radius="0.5">
+                    <GradientStop Color="{StaticResource BcGlowTealSoft}" Offset="0.0" />
+                    <GradientStop Color="{StaticResource BcGlowTealFade}" Offset="1.0" />
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+
+        <Grid RowDefinitions="*,Auto">
+
+            <ScrollView Grid.Row="0">
+                <VerticalStackLayout Padding="24,40,24,16" Spacing="28">
+
+                    <!-- Logo (sur pastille blanche pour rester lisible sur fond sombre) -->
+                    <Border BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="14,8"
+                            HorizontalOptions="Start">
+                        <Image Source="become_logo.png"
+                               HeightRequest="36"
+                               WidthRequest="120"
+                               Aspect="AspectFit"
+                               SemanticProperties.Description="Logo BECOME" />
+                    </Border>
+
+                    <!-- Illustration centrale : la vision au centre, objectifs / actions / progression en orbite -->
+                    <Grid x:Name="HeroZone" WidthRequest="280" HeightRequest="280"
+                          HorizontalOptions="Center">
+
+                        <Ellipse x:Name="HeroGlow" WidthRequest="280" HeightRequest="280"
+                                 HorizontalOptions="Center" VerticalOptions="Center">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush Center="0.5,0.5" Radius="0.5">
+                                    <GradientStop Color="{StaticResource BcGlowVioletSoft}" Offset="0.0" />
+                                    <GradientStop Color="{StaticResource BcGlowVioletFade}" Offset="1.0" />
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <Ellipse WidthRequest="220" HeightRequest="220"
+                                 HorizontalOptions="Center" VerticalOptions="Center"
+                                 Stroke="{StaticResource BcGlassBorder}" StrokeThickness="1" />
+                        <Ellipse WidthRequest="150" HeightRequest="150"
+                                 HorizontalOptions="Center" VerticalOptions="Center"
+                                 Stroke="{StaticResource BcGlassBorder}" StrokeThickness="1" />
+
+                        <!-- Noyau : Vision -->
+                        <Border WidthRequest="92" HeightRequest="92"
+                                HorizontalOptions="Center" VerticalOptions="Center"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 46">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="{StaticResource BcGlowViolet}" Offset="0.0" />
+                                    <GradientStop Color="{StaticResource BcGlowTeal}" Offset="1.0" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.Shadow>
+                                <Shadow Brush="{StaticResource BcGlowViolet}" Opacity="0.7" Radius="32" Offset="0,0" />
+                            </Border.Shadow>
+                            <Path Data="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                                  Fill="White" Aspect="Uniform"
+                                  WidthRequest="40" HeightRequest="40"
+                                  HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+
+                        <!-- Orbite : Objectifs -->
+                        <Border WidthRequest="48" HeightRequest="48"
+                                HorizontalOptions="Center" VerticalOptions="Center"
+                                TranslationY="-110"
+                                BackgroundColor="{StaticResource BcNightDeep}"
+                                Stroke="{StaticResource BcGlassBorder}" StrokeThickness="1"
+                                StrokeShape="RoundRectangle 24">
+                            <Path Data="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"
+                                  Fill="{StaticResource BcGlowTeal}" Aspect="Uniform"
+                                  WidthRequest="22" HeightRequest="22"
+                                  HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+
+                        <!-- Orbite : Actions -->
+                        <Border WidthRequest="48" HeightRequest="48"
+                                HorizontalOptions="Center" VerticalOptions="Center"
+                                TranslationX="95" TranslationY="55"
+                                BackgroundColor="{StaticResource BcNightDeep}"
+                                Stroke="{StaticResource BcGlassBorder}" StrokeThickness="1"
+                                StrokeShape="RoundRectangle 24">
+                            <Path Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                                  Fill="{StaticResource BcGlowTeal}" Aspect="Uniform"
+                                  WidthRequest="22" HeightRequest="22"
+                                  HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+
+                        <!-- Orbite : Progression -->
+                        <Border WidthRequest="48" HeightRequest="48"
+                                HorizontalOptions="Center" VerticalOptions="Center"
+                                TranslationX="-95" TranslationY="55"
+                                BackgroundColor="{StaticResource BcNightDeep}"
+                                Stroke="{StaticResource BcGlassBorder}" StrokeThickness="1"
+                                StrokeShape="RoundRectangle 24">
+                            <Path Data="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"
+                                  Fill="{StaticResource BcGlowTeal}" Aspect="Uniform"
+                                  WidthRequest="22" HeightRequest="22"
+                                  HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                    </Grid>
+
+                    <!-- Titre + description -->
+                    <VerticalStackLayout x:Name="TextBlock" Spacing="12">
+                        <Label Text="La personne que tu veux devenir se construit aujourd'hui."
+                               FontSize="32"
+                               FontAttributes="Bold"
+                               LineHeight="1.15"
+                               TextColor="{StaticResource BcOnNight}"
+                               SemanticProperties.HeadingLevel="Level1" />
+                        <Label Text="Clarifie ta vision, découvre tes priorités et avance chaque jour vers la vie que tu souhaites construire."
+                               FontSize="16"
+                               LineHeight="1.4"
+                               TextColor="{StaticResource BcOnNightMuted}" />
+                    </VerticalStackLayout>
+
+                    <!-- Ton parcours -->
+                    <Border BackgroundColor="{StaticResource BcGlass}"
+                            Stroke="{StaticResource BcGlassBorder}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 24"
+                            Padding="20">
+                        <VerticalStackLayout Spacing="16">
+
+                            <Label Text="TON PARCOURS"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   CharacterSpacing="2"
+                                   TextColor="{StaticResource BcGlowTeal}" />
+
+                            <Grid>
+                                <!-- Ligne lumineuse qui relie les étapes -->
+                                <BoxView WidthRequest="2"
+                                         HorizontalOptions="Start"
+                                         Margin="21,22,0,22"
+                                         CornerRadius="1">
+                                    <BoxView.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="{StaticResource BcGlowViolet}" Offset="0.0" />
+                                            <GradientStop Color="{StaticResource BcGlowTeal}" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </BoxView.Background>
+                                </BoxView>
+
+                                <VerticalStackLayout Spacing="22">
+
+                                    <Grid ColumnDefinitions="44,*" ColumnSpacing="16" HeightRequest="44">
+                                        <Border Grid.Column="0" WidthRequest="44" HeightRequest="44"
+                                                StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="{StaticResource BcGlowViolet}" Offset="0.0" />
+                                                    <GradientStop Color="{StaticResource BcGlowTeal}" Offset="1.0" />
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <Path Data="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                                                  Fill="White" Aspect="Uniform" WidthRequest="20" HeightRequest="20"
+                                                  HorizontalOptions="Center" VerticalOptions="Center" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                            <Label Text="Ta vision" FontSize="17" FontAttributes="Bold"
+                                                   TextColor="{StaticResource BcOnNight}" />
+                                            <Label Text="Ce que tu veux devenir" FontSize="14"
+                                                   TextColor="{StaticResource BcOnNightMuted}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="44,*" ColumnSpacing="16" HeightRequest="44">
+                                        <Border Grid.Column="0" WidthRequest="44" HeightRequest="44"
+                                                StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="{StaticResource BcGlowViolet}" Offset="0.0" />
+                                                    <GradientStop Color="{StaticResource BcGlowTeal}" Offset="1.0" />
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <Path Data="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"
+                                                  Fill="White" Aspect="Uniform" WidthRequest="20" HeightRequest="20"
+                                                  HorizontalOptions="Center" VerticalOptions="Center" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                            <Label Text="Tes objectifs" FontSize="17" FontAttributes="Bold"
+                                                   TextColor="{StaticResource BcOnNight}" />
+                                            <Label Text="Ce qui compte en ce moment" FontSize="14"
+                                                   TextColor="{StaticResource BcOnNightMuted}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="44,*" ColumnSpacing="16" HeightRequest="44">
+                                        <Border Grid.Column="0" WidthRequest="44" HeightRequest="44"
+                                                StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="{StaticResource BcGlowViolet}" Offset="0.0" />
+                                                    <GradientStop Color="{StaticResource BcGlowTeal}" Offset="1.0" />
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <Path Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                                                  Fill="White" Aspect="Uniform" WidthRequest="20" HeightRequest="20"
+                                                  HorizontalOptions="Center" VerticalOptions="Center" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                            <Label Text="Tes actions du jour" FontSize="17" FontAttributes="Bold"
+                                                   TextColor="{StaticResource BcOnNight}" />
+                                            <Label Text="Un pas simple, chaque jour" FontSize="14"
+                                                   TextColor="{StaticResource BcOnNightMuted}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="44,*" ColumnSpacing="16" HeightRequest="44">
+                                        <Border Grid.Column="0" WidthRequest="44" HeightRequest="44"
+                                                StrokeThickness="0" StrokeShape="RoundRectangle 22">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="{StaticResource BcGlowViolet}" Offset="0.0" />
+                                                    <GradientStop Color="{StaticResource BcGlowTeal}" Offset="1.0" />
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <Path Data="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"
+                                                  Fill="White" Aspect="Uniform" WidthRequest="20" HeightRequest="20"
+                                                  HorizontalOptions="Center" VerticalOptions="Center" />
+                                        </Border>
+                                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                            <Label Text="Ta progression" FontSize="17" FontAttributes="Bold"
+                                                   TextColor="{StaticResource BcOnNight}" />
+                                            <Label Text="Ce que tu construis vraiment" FontSize="14"
+                                                   TextColor="{StaticResource BcOnNightMuted}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+
+                                </VerticalStackLayout>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Label Text="Rester aligné avec sa vision, au quotidien."
+                           FontSize="14"
+                           FontAttributes="Italic"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{StaticResource BcOnNightMuted}" />
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!-- Boutons fixes en bas -->
+            <VerticalStackLayout Grid.Row="1" Spacing="12" Padding="24,12,24,28">
+                <Button Text="Commencer mon parcours"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="16"
+                        HeightRequest="56"
+                        Clicked="OnStartClicked">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#6A55F5" Offset="0.0" />
+                            <GradientStop Color="#3B82F6" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <Button.Shadow>
+                        <Shadow Brush="#6A55F5" Opacity="0.55" Radius="20" Offset="0,6" />
+                    </Button.Shadow>
+                </Button>
+
+                <Button Text="J'ai déjà un compte"
+                        BackgroundColor="{StaticResource BcGlass}"
+                        BorderColor="{StaticResource BcGlassBorder}"
+                        BorderWidth="1"
+                        TextColor="{StaticResource BcOnNight}"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="16"
+                        HeightRequest="56"
+                        Clicked="OnLoginClicked" />
+            </VerticalStackLayout>
+
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -6,7 +6,7 @@ namespace Become.ViewModels;
 /// Base des écrans qui valident des séances : message de retour discret, qui disparaît seul.
 /// Trois niveaux de feedback : séance simple, série qui progresse, jalon / objectif atteint.
 /// </summary>
-public abstract class FeedbackViewModel : BaseViewModel
+public abstract class FeedbackViewModel : BecomeViewModelBase
 {
     private string _feedback = "";
     private CancellationTokenSource? _cts;

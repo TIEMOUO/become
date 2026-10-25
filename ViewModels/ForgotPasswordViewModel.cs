@@ -4,7 +4,7 @@ using Become.Services;
 
 namespace Become.ViewModels;
 
-public class ForgotPasswordViewModel : BaseViewModel
+public class ForgotPasswordViewModel : BecomeViewModelBase
 {
     private readonly IAuthService _auth;
 

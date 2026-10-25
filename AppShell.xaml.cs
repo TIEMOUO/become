@@ -1,4 +1,3 @@
-using Become.Helpers;
 using Become.Views;
 
 namespace Become;
@@ -9,10 +8,13 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
 
-        // Pages empilées (le bouton retour système est géré par Shell)
-        Routing.RegisterRoute(AppNavigator.RegisterRoute, typeof(RegisterPage));
-        Routing.RegisterRoute(AppNavigator.ForgotRoute, typeof(ForgotPasswordPage));
-        Routing.RegisterRoute(AppNavigator.CreateRoute, typeof(CreateGoalPage));
-        Routing.RegisterRoute(AppNavigator.DetailRoute, typeof(GoalDetailPage));
+        Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+        Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+        Routing.RegisterRoute(nameof(VisionQuestionnairePage), typeof(VisionQuestionnairePage));
+        Routing.RegisterRoute(nameof(VisionResultPage), typeof(VisionResultPage));
+        Routing.RegisterRoute(nameof(PrioritiesPage), typeof(PrioritiesPage));
+        Routing.RegisterRoute(nameof(GoalSuggestionsPage), typeof(GoalSuggestionsPage));
+        Routing.RegisterRoute(nameof(GoalEditPage), typeof(GoalEditPage));
+        Routing.RegisterRoute(nameof(ActionEditPage), typeof(ActionEditPage));
     }
 }

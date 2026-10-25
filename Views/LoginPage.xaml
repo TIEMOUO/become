@@ -1,98 +1,103 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:controls="clr-namespace:Become.Controls"
-             xmlns:helpers="clr-namespace:Become.Helpers"
-             xmlns:vm="clr-namespace:Become.ViewModels"
              x:Class="Become.Views.LoginPage"
-             x:DataType="vm:LoginViewModel"
-             Shell.NavBarIsVisible="False"
-             ios:Page.UseSafeArea="True">
+             Style="{StaticResource BcPage}"
+             Title="Connexion">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20,32,20,24" Spacing="0">
+    <Grid Background="{StaticResource BcNightBrush}">
 
-            <controls:AuthHeader Title="Heureux de vous revoir."
-                                 Subtitle="Un petit pas aujourd'hui. Un grand changement demain." />
+        <Ellipse InputTransparent="True" WidthRequest="340" HeightRequest="340"
+                 HorizontalOptions="End" VerticalOptions="Start"
+                 TranslationX="120" TranslationY="-110">
+            <Ellipse.Fill>
+                <RadialGradientBrush Center="0.5,0.5" Radius="0.5">
+                    <GradientStop Color="{StaticResource BcGlowVioletSoft}" Offset="0.0" />
+                    <GradientStop Color="{StaticResource BcGlowVioletFade}" Offset="1.0" />
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
 
-            <!-- Formulaire dans une carte : même langage visuel que le reste de l'application -->
-            <Border Style="{StaticResource AuthCard}" Margin="0,32,0,0">
-                <VerticalStackLayout Spacing="20">
+        <ScrollView>
+            <VerticalStackLayout Padding="24,24,24,32" Spacing="20">
 
-                    <!-- Erreur globale (identifiants invalides, réseau) -->
-                    <controls:InlineBanner Kind="Error"
-                                           Message="{Binding GlobalError}"
-                                           IsVisible="{Binding HasGlobalError}" />
+                <!-- Retour -->
+                <Border WidthRequest="44" HeightRequest="44" HorizontalOptions="Start"
+                        BackgroundColor="{StaticResource BcGlass}"
+                        Stroke="{StaticResource BcGlassBorder}" StrokeThickness="1"
+                        StrokeShape="RoundRectangle 22"
+                        SemanticProperties.Description="Retour">
+                    <Path Data="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+                          Fill="White" Aspect="Uniform" WidthRequest="20" HeightRequest="20"
+                          HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
 
-                    <controls:FormField Title="Adresse e-mail"
-                                        Icon="{x:Static helpers:AppIcons.Mail}"
-                                        Placeholder="vous@exemple.com"
-                                        InputKeyboard="Email"
-                                        Text="{Binding Email}"
-                                        ErrorMessage="{Binding EmailError}" />
-
-                    <VerticalStackLayout Spacing="2">
-                        <controls:FormField Title="Mot de passe"
-                                            Icon="{x:Static helpers:AppIcons.Lock}"
-                                            Placeholder="Votre mot de passe"
-                                            IsPassword="True"
-                                            Text="{Binding Password}"
-                                            ErrorMessage="{Binding PasswordError}" />
-
-                        <Label Text="Mot de passe oublié ?"
-                               Style="{StaticResource LinkLabel}"
-                               HorizontalOptions="End"
-                               SemanticProperties.Description="Mot de passe oublié ? Ouvrir la récupération">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </VerticalStackLayout>
-
-                    <Button Text="{Binding ButtonText}"
-                            Command="{Binding LoginCommand}"
-                            Style="{StaticResource PrimaryButton}" />
-
-                    <!-- Séparateur -->
-                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="16">
-                        <BoxView Grid.Column="0" Style="{StaticResource Divider}" VerticalOptions="Center" />
-                        <Label Grid.Column="1" Text="ou" Style="{StaticResource Caption}" />
-                        <BoxView Grid.Column="2" Style="{StaticResource Divider}" VerticalOptions="Center" />
-                    </Grid>
-
-                    <Button Text="Continuer avec Apple"
-                            Command="{Binding AppleCommand}"
-                            Style="{StaticResource SecondaryButton}" />
+                <VerticalStackLayout Spacing="8" Margin="0,12,0,8">
+                    <Label Text="Content de te revoir."
+                           Style="{StaticResource BcDarkTitle}"
+                           SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="Reprends là où tu t'étais arrêté(e) et continue d'avancer vers ta vision."
+                           Style="{StaticResource BcDarkBody}" />
                 </VerticalStackLayout>
-            </Border>
 
-            <!-- Accès à l'inscription -->
-            <Label HorizontalOptions="Center" Margin="0,16,0,0" Padding="0,12">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Nouveau sur Become ?  "
-                              TextColor="{StaticResource TextSecondary}" />
-                        <Span Text="Créer un compte"
-                              FontFamily="InterSemibold"
-                              TextColor="{StaticResource Primary}" />
-                    </FormattedString>
-                </Label.FormattedText>
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding RegisterCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
+                <!-- Email -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Adresse e-mail" Style="{StaticResource BcDarkLabel}" />
+                    <Border Style="{StaticResource BcDarkField}">
+                        <Entry Text="{Binding Email}" Placeholder="exemple@email.com"
+                               Keyboard="Email" Style="{StaticResource BcDarkEntry}" />
+                    </Border>
+                    <Label Text="{Binding EmailError}" Style="{StaticResource BcDarkError}"
+                           IsVisible="{Binding HasEmailError}" />
+                </VerticalStackLayout>
 
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="6" Margin="0,8,0,0">
-                <Label Text="{x:Static helpers:AppIcons.Shield}"
-                       Style="{StaticResource IconLabel}"
-                       FontSize="16"
-                       TextColor="{StaticResource TextMuted}"
-                       AutomationProperties.IsInAccessibleTree="False" />
-                <Label Text="Vos objectifs restent personnels."
-                       Style="{StaticResource Caption}"
-                       VerticalOptions="Center" />
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
-    </ScrollView>
+                <!-- Mot de passe -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Mot de passe" Style="{StaticResource BcDarkLabel}" />
+                    <Border Style="{StaticResource BcDarkField}">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Entry Grid.Column="0" Text="{Binding Password}"
+                                   Placeholder="Ton mot de passe"
+                                   IsPassword="{Binding IsPasswordHidden}"
+                                   Style="{StaticResource BcDarkEntry}" />
+                            <Path Grid.Column="1"
+                                  Data="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+                                  Fill="{StaticResource BcOnNightMuted}" Aspect="Uniform"
+                                  WidthRequest="22" HeightRequest="22"
+                                  VerticalOptions="Center"
+                                  SemanticProperties.Description="Afficher ou masquer le mot de passe">
+                                <Path.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TogglePasswordCommand}" />
+                                </Path.GestureRecognizers>
+                            </Path>
+                        </Grid>
+                    </Border>
+                    <Label Text="{Binding PasswordError}" Style="{StaticResource BcDarkError}"
+                           IsVisible="{Binding HasPasswordError}" />
+                </VerticalStackLayout>
+
+                <Label Text="{Binding GlobalError}" Style="{StaticResource BcDarkError}"
+                       IsVisible="{Binding HasGlobalError}" />
+
+                <Grid Margin="0,8,0,0">
+                    <Button Text="Se connecter"
+                            Style="{StaticResource BcGlowButton}"
+                            Command="{Binding LoginCommand}"
+                            IsEnabled="{Binding IsNotBusy}" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                       IsVisible="{Binding IsBusy}"
+                                       Color="White"
+                                       HorizontalOptions="End" Margin="0,0,22,0" />
+                </Grid>
+
+                <Button Text="Pas encore de compte ? Créer un compte"
+                        Style="{StaticResource BcLinkButton}"
+                        Command="{Binding GoToRegisterCommand}" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

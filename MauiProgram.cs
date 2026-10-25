@@ -45,6 +45,39 @@ public static class MauiProgram
         builder.Services.AddTransient<TrackingPage>();
         builder.Services.AddTransient<ReportPage>();
 
+        builder.Services.AddSingleton<Become.Services.IAccountService, Become.Services.LocalAccountService>();
+
+        builder.Services.AddTransient<Become.ViewModels.LoginViewModel>();
+        builder.Services.AddTransient<Become.ViewModels.RegisterViewModel>();
+
+        builder.Services.AddTransient<Become.Views.LoginPage>();
+        builder.Services.AddTransient<Become.Views.RegisterPage>();
+
+        builder.Services.AddSingleton<IBecomeStore, BecomeStore>();
+
+        builder.Services.AddTransient<VisionQuestionnaireViewModel>();
+        builder.Services.AddTransient<VisionResultViewModel>();
+        builder.Services.AddTransient<PrioritiesViewModel>();
+        builder.Services.AddTransient<GoalSuggestionsViewModel>();
+        builder.Services.AddTransient<GoalEditViewModel>();
+        builder.Services.AddTransient<ActionEditViewModel>();
+        builder.Services.AddTransient<HomeViewModel>();
+        builder.Services.AddTransient<GoalsViewModel>();
+        builder.Services.AddTransient<ProgressViewModel>();
+        builder.Services.AddTransient<ProfileViewModel>();
+
+        builder.Services.AddTransient<WelcomePage>();
+        builder.Services.AddTransient<VisionQuestionnairePage>();
+        builder.Services.AddTransient<VisionResultPage>();
+        builder.Services.AddTransient<PrioritiesPage>();
+        builder.Services.AddTransient<GoalSuggestionsPage>();
+        builder.Services.AddTransient<GoalEditPage>();
+        builder.Services.AddTransient<ActionEditPage>();
+        builder.Services.AddTransient<HomePage>();
+        builder.Services.AddTransient<GoalsPage>();
+        builder.Services.AddTransient<ProgressPage>();
+        builder.Services.AddTransient<ProfilePage>();
         return builder.Build();
+
     }
 }

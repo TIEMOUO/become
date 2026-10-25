@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- ===== COULEURS ===== -->
+    <Color x:Key="BcPrimary">#5B4BDB</Color>
+    <Color x:Key="BcPrimaryDark">#3F32A8</Color>
+    <Color x:Key="BcPrimarySoft">#ECEAFB</Color>
+    <Color x:Key="BcSecondary">#14B8A6</Color>
+    <Color x:Key="BcBackground">#F8F7FC</Color>
+    <Color x:Key="BcSurface">#FFFFFF</Color>
+    <Color x:Key="BcTextPrimary">#1F1B2E</Color>
+    <Color x:Key="BcTextSecondary">#625F78</Color>
+    <Color x:Key="BcBorder">#D9D6EA</Color>
+    <Color x:Key="BcSuccess">#15803D</Color>
+    <Color x:Key="BcDanger">#B91C1C</Color>
+
+    <!-- ===== THÈME NUIT / LUMINEUX ===== -->
+    <Color x:Key="BcNight">#0B0A1F</Color>
+    <Color x:Key="BcNightDeep">#1B1352</Color>
+    <Color x:Key="BcGlowViolet">#7C6CFF</Color>
+    <Color x:Key="BcGlowTeal">#2DD4BF</Color>
+    <Color x:Key="BcGlowVioletSoft">#667C6CFF</Color>
+    <Color x:Key="BcGlowVioletFade">#007C6CFF</Color>
+    <Color x:Key="BcGlowTealSoft">#552DD4BF</Color>
+    <Color x:Key="BcGlowTealFade">#002DD4BF</Color>
+    <Color x:Key="BcGlass">#14FFFFFF</Color>
+    <Color x:Key="BcGlassBorder">#2EFFFFFF</Color>
+    <Color x:Key="BcOnNight">#FFFFFF</Color>
+    <Color x:Key="BcOnNightMuted">#B8B5D6</Color>
+
+    <!-- ===== BROSSES ===== -->
+    <LinearGradientBrush x:Key="BcNightBrush" StartPoint="0,0" EndPoint="0.4,1">
+        <GradientStop Color="{StaticResource BcNight}" Offset="0.0" />
+        <GradientStop Color="{StaticResource BcNightDeep}" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BcActionBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#6A55F5" Offset="0.0" />
+        <GradientStop Color="#3B82F6" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- ===== THÈME SOMBRE : TEXTES ===== -->
+    <Style x:Key="BcDarkTitle" TargetType="Label">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource BcOnNight}" />
+        <Setter Property="LineHeight" Value="1.15" />
+    </Style>
+    <Style x:Key="BcDarkBody" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource BcOnNightMuted}" />
+        <Setter Property="LineHeight" Value="1.4" />
+    </Style>
+    <Style x:Key="BcDarkLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource BcOnNightMuted}" />
+    </Style>
+    <Style x:Key="BcDarkError" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="#FF8A8A" />
+    </Style>
+
+    <!-- ===== THÈME SOMBRE : CHAMPS ===== -->
+    <Style x:Key="BcDarkField" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource BcGlass}" />
+        <Setter Property="Stroke" Value="{StaticResource BcGlassBorder}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 14" />
+        <Setter Property="Padding" Value="14,0" />
+    </Style>
+    <Style x:Key="BcDarkEntry" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource BcOnNight}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource BcOnNightMuted}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HeightRequest" Value="52" />
+    </Style>
+
+    <!-- ===== THÈME SOMBRE : BOUTONS ===== -->
+    <Style x:Key="BcGlowButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource BcActionBrush}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="HeightRequest" Value="56" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.6" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+    <Style x:Key="BcLinkButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource BcGlowTeal}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HeightRequest" Value="48" />
+    </Style>
+
+    <!-- ===== ESPACEMENTS ===== -->
+    <x:Double x:Key="BcSpacingS">8</x:Double>
+    <x:Double x:Key="BcSpacingM">16</x:Double>
+    <x:Double x:Key="BcSpacingL">24</x:Double>
+    <Thickness x:Key="BcPagePadding">24,32</Thickness>
+
+    <!-- ===== PAGES ===== -->
+    <Style x:Key="BcPage" TargetType="ContentPage">
+        <Setter Property="BackgroundColor" Value="{StaticResource BcBackground}" />
+        <Setter Property="Shell.NavBarIsVisible" Value="False" />
+    </Style>
+
+    <!-- ===== TEXTES ===== -->
+    <Style x:Key="BcTitle" TargetType="Label">
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource BcTextPrimary}" />
+        <Setter Property="LineHeight" Value="1.15" />
+    </Style>
+    <Style x:Key="BcHeading" TargetType="Label">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource BcTextPrimary}" />
+    </Style>
+    <Style x:Key="BcBody" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource BcTextSecondary}" />
+        <Setter Property="LineHeight" Value="1.4" />
+    </Style>
+    <Style x:Key="BcCaption" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource BcTextSecondary}" />
+    </Style>
+    <Style x:Key="BcError" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource BcDanger}" />
+    </Style>
+
+    <!-- ===== BOUTONS ===== -->
+    <Style x:Key="BcPrimaryButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource BcPrimary}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="HeightRequest" Value="54" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource BcPrimaryDark}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource BcBorder}" />
+                            <Setter Property="TextColor" Value="{StaticResource BcTextSecondary}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="BcSecondaryButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource BcPrimary}" />
+        <Setter Property="BorderColor" Value="{StaticResource BcPrimary}" />
+        <Setter Property="BorderWidth" Value="1.5" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="HeightRequest" Value="54" />
+    </Style>
+
+    <!-- ===== CARTES ===== -->
+    <Style x:Key="BcCard" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource BcSurface}" />
+        <Setter Property="Stroke" Value="{StaticResource BcBorder}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 18" />
+        <Setter Property="Padding" Value="16" />
+    </Style>
+
+    <!-- ===== CHAMPS ===== -->
+    <Style x:Key="BcEntry" TargetType="Entry">
+        <Setter Property="TextColor" Value="{StaticResource BcTextPrimary}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource BcTextSecondary}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HeightRequest" Value="50" />
+    </Style>
+    <Style x:Key="BcEntryBorder" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource BcSurface}" />
+        <Setter Property="Stroke" Value="{StaticResource BcBorder}" />
+        <Setter Property="StrokeThickness" Value="1.5" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+        <Setter Property="Padding" Value="14,0" />
+    </Style>
+
+    <!-- ===== STYLES SUPPLÉMENTAIRES (pages après connexion) ===== -->
+    <Style x:Key="BcDarkCard" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource BcGlass}" />
+        <Setter Property="Stroke" Value="{StaticResource BcGlassBorder}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 20" />
+        <Setter Property="Padding" Value="18" />
+    </Style>
+
+    <Style x:Key="BcChip" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource BcGlass}" />
+        <Setter Property="Stroke" Value="{StaticResource BcGlassBorder}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 20" />
+        <Setter Property="Padding" Value="16,10" />
+    </Style>
+
+    <Style x:Key="BcDarkEditor" TargetType="Editor">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource BcOnNight}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource BcOnNightMuted}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="AutoSize" Value="TextChanges" />
+        <Setter Property="MinimumHeightRequest" Value="120" />
+    </Style>
+
+    <Style x:Key="BcDarkHeading" TargetType="Label">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource BcOnNight}" />
+    </Style>
+
+    <Style x:Key="BcSectionLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CharacterSpacing" Value="2" />
+        <Setter Property="TextColor" Value="{StaticResource BcGlowTeal}" />
+    </Style>
+
+    <Style x:Key="BcGhostButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource BcGlass}" />
+        <Setter Property="BorderColor" Value="{StaticResource BcGlassBorder}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="TextColor" Value="{StaticResource BcOnNight}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="HeightRequest" Value="48" />
+    </Style>
+
+</ResourceDictionary>
+    
+    
