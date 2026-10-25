@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Become.Controls"
+             x:Class="Become.Views.GoalEditPage"
+             Style="{StaticResource BcPage}"
+             Title="Modifier l'objectif">
+
+    <Grid Background="{StaticResource BcNightBrush}" RowDefinitions="*,Auto">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="24,24,24,16" Spacing="18">
+
+                <controls:BecomeBackButton />
+
+                <Label Text="Modifier l'objectif" Style="{StaticResource BcDarkTitle}"
+                       SemanticProperties.HeadingLevel="Level1" />
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Titre" Style="{StaticResource BcDarkLabel}" />
+                    <Border Style="{StaticResource BcDarkField}">
+                        <Entry Text="{Binding Title}" Style="{StaticResource BcDarkEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Description" Style="{StaticResource BcDarkLabel}" />
+                    <Border Style="{StaticResource BcDarkField}" Padding="14,6">
+                        <Editor Text="{Binding Description}" MinimumHeightRequest="100"
+                                Style="{StaticResource BcDarkEditor}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Résultat attendu" Style="{StaticResource BcDarkLabel}" />
+                    <Border Style="{StaticResource BcDarkField}" Padding="14,6">
+                        <Editor Text="{Binding ExpectedResult}" MinimumHeightRequest="80"
+                                Style="{StaticResource BcDarkEditor}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0" Text="Définir une échéance"
+                           Style="{StaticResource BcDarkLabel}" VerticalOptions="Center" />
+                    <Switch Grid.Column="1" IsToggled="{Binding HasDueDate}"
+                            OnColor="{StaticResource BcGlowTeal}" ThumbColor="White" />
+                </Grid>
+
+                <Border Style="{StaticResource BcDarkField}" IsVisible="{Binding HasDueDate}">
+                    <DatePicker Date="{Binding DueDate}" TextColor="White" />
+                </Border>
+
+                <Label Text="{Binding Error}" Style="{StaticResource BcDarkError}"
+                       IsVisible="{Binding HasError}" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <VerticalStackLayout Grid.Row="1" Padding="24,12,24,28">
+            <Button Text="Enregistrer"
+                    Style="{StaticResource BcGlowButton}"
+                    Command="{Binding SaveCommand}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

@@ -1,31 +1,20 @@
-using Become.Helpers;
-using Become.Models;
 using Become.ViewModels;
 
 namespace Become.Views;
 
 public partial class GoalsPage : ContentPage
 {
-    private readonly GoalsViewModel _viewModel;
+    private readonly GoalsViewModel _vm;
 
-    public GoalsPage(GoalsViewModel viewModel)
+    public GoalsPage(GoalsViewModel vm)
     {
         InitializeComponent();
-        BindingContext = _viewModel = viewModel;
+        BindingContext = _vm = vm;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        _viewModel.Refresh();
+        await _vm.LoadAsync();
     }
-
-    private void OnGoalTapped(object? sender, TappedEventArgs e)
-    {
-        if (sender is BindableObject { BindingContext: Goal goal })
-            _viewModel.OpenGoalCommand.Execute(goal);
-    }
-
-    private async void OnTabSelected(object? sender, string tab)
-        => await AppNavigator.OpenTabAsync(tab);
 }

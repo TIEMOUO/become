@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Become.Controls"
+             x:Class="Become.Views.PrioritiesPage"
+             Style="{StaticResource BcPage}"
+             Title="Priorités">
+
+    <Grid Background="{StaticResource BcNightBrush}" RowDefinitions="*,Auto">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="24,24,24,16" Spacing="22">
+
+                <controls:BecomeBackButton />
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="TES PRIORITÉS" Style="{StaticResource BcSectionLabel}" />
+                    <Label Text="Sur quoi veux-tu avancer en ce moment ?"
+                           Style="{StaticResource BcDarkTitle}" FontSize="26"
+                           SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="Choisis jusqu'à 3 domaines. Tu pourras les changer plus tard."
+                           Style="{StaticResource BcDarkBody}" />
+                </VerticalStackLayout>
+
+                <FlexLayout Wrap="Wrap" JustifyContent="Start"
+                            BindableLayout.ItemsSource="{Binding Domains}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource BcChip}" Margin="0,0,8,8">
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="BackgroundColor" Value="{StaticResource BcGlowViolet}" />
+                                        <Setter Property="Stroke" Value="{StaticResource BcGlowTeal}" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                                <Label Text="{Binding Label}" TextColor="White" FontSize="15" />
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleCommand}" />
+                                </Border.GestureRecognizers>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+
+                <VerticalStackLayout Spacing="8" IsVisible="{Binding ShowOtherField}">
+                    <Label Text="Quel autre domaine ?" Style="{StaticResource BcDarkLabel}" />
+                    <Border Style="{StaticResource BcDarkField}">
+                        <Entry Text="{Binding CustomDomain}" Placeholder="Ex. : entrepreneuriat"
+                               Style="{StaticResource BcDarkEntry}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Temps que tu peux y consacrer" Style="{StaticResource BcDarkLabel}" />
+                    <Label Text="{Binding MinutesText}" Style="{StaticResource BcDarkHeading}" />
+                    <Slider Minimum="5" Maximum="120"
+                            Value="{Binding Minutes}"
+                            MinimumTrackColor="{StaticResource BcGlowTeal}"
+                            MaximumTrackColor="{StaticResource BcGlassBorder}"
+                            ThumbColor="White" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Contraintes utiles (facultatif)" Style="{StaticResource BcDarkLabel}" />
+                    <Border Style="{StaticResource BcDarkField}" Padding="14,6">
+                        <Editor Text="{Binding Constraints}"
+                                Placeholder="Ex. : cours le matin, peu de budget…"
+                                MinimumHeightRequest="80"
+                                Style="{StaticResource BcDarkEditor}" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <Label Text="{Binding Error}" Style="{StaticResource BcDarkError}"
+                       IsVisible="{Binding HasError}" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <VerticalStackLayout Grid.Row="1" Padding="24,12,24,28">
+            <Button Text="Continuer"
+                    Style="{StaticResource BcGlowButton}"
+                    Command="{Binding ContinueCommand}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Become.Controls"
+             x:Class="Become.Views.GoalSuggestionsPage"
+             Style="{StaticResource BcPage}"
+             Title="Objectifs proposés">
+
+    <Grid Background="{StaticResource BcNightBrush}" RowDefinitions="*,Auto">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="24,24,24,16" Spacing="18">
+
+                <controls:BecomeBackButton />
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="TES OBJECTIFS" Style="{StaticResource BcSectionLabel}" />
+                    <Label Text="Voici ce que je te propose."
+                           Style="{StaticResource BcDarkTitle}" FontSize="26"
+                           SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="Ces propositions viennent de ta vision, de tes priorités et de ton temps disponible. Rien n'est activé sans ton accord."
+                           Style="{StaticResource BcDarkBody}" />
+                    <Label Text="{Binding ActiveCountText}" Style="{StaticResource BcDarkLabel}" />
+                </VerticalStackLayout>
+
+                <Border Style="{StaticResource BcDarkCard}" IsVisible="{Binding HasMessage}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{Binding Message}" TextColor="{StaticResource BcOnNight}" FontSize="16" />
+                        <Button Text="Modifier mes priorités"
+                                Style="{StaticResource BcLinkButton}"
+                                HorizontalOptions="Start" Padding="0"
+                                Command="{Binding EditPrioritiesCommand}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="{Binding Error}" Style="{StaticResource BcDarkError}"
+                       IsVisible="{Binding HasError}" />
+
+                <VerticalStackLayout Spacing="16" BindableLayout.ItemsSource="{Binding Suggestions}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource BcDarkCard}">
+                                <VerticalStackLayout Spacing="10">
+
+                                    <Label Text="{Binding Domain}" Style="{StaticResource BcSectionLabel}" />
+
+                                    <VerticalStackLayout Spacing="8" IsVisible="{Binding IsNotEditing}">
+                                        <Label Text="{Binding Title}" Style="{StaticResource BcDarkHeading}" />
+                                        <Label Text="{Binding Description}" Style="{StaticResource BcDarkBody}" FontSize="15" />
+                                        <Label Text="{Binding ExpectedResult, StringFormat='Résultat attendu : {0}'}"
+                                               TextColor="{StaticResource BcOnNight}" FontSize="15" />
+                                    </VerticalStackLayout>
+
+                                    <VerticalStackLayout Spacing="8" IsVisible="{Binding IsEditing}">
+                                        <Border Style="{StaticResource BcDarkField}">
+                                            <Entry Text="{Binding Title}" Placeholder="Titre de l'objectif"
+                                                   Style="{StaticResource BcDarkEntry}" />
+                                        </Border>
+                                        <Border Style="{StaticResource BcDarkField}">
+                                            <Entry Text="{Binding ExpectedResult}" Placeholder="Résultat attendu"
+                                                   Style="{StaticResource BcDarkEntry}" />
+                                        </Border>
+                                    </VerticalStackLayout>
+
+                                    <Label Text="{Binding VisionLink}" Style="{StaticResource BcDarkLabel}"
+                                           FontAttributes="Italic" />
+
+                                    <Label Text="ACTIONS PROPOSÉES" Style="{StaticResource BcSectionLabel}" Margin="0,4,0,0" />
+                                    <Label Text="{Binding ActionsSummary}" Style="{StaticResource BcDarkBody}" FontSize="14" />
+
+                                    <Button Text="Accepter cet objectif"
+                                            Style="{StaticResource BcGlowButton}" HeightRequest="48"
+                                            Command="{Binding AcceptCommand}" Margin="0,6,0,0" />
+
+                                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                                        <Button Grid.Column="0" Text="{Binding EditButtonText}"
+                                                Style="{StaticResource BcGhostButton}" FontSize="13" HeightRequest="44"
+                                                Padding="0" Command="{Binding EditCommand}" />
+                                        <Button Grid.Column="1" Text="Remplacer"
+                                                Style="{StaticResource BcGhostButton}" FontSize="13" HeightRequest="44"
+                                                Padding="0" Command="{Binding ReplaceCommand}" />
+                                        <Button Grid.Column="2" Text="Refuser"
+                                                Style="{StaticResource BcGhostButton}" FontSize="13" HeightRequest="44"
+                                                Padding="0" Command="{Binding RejectCommand}" />
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <VerticalStackLayout Grid.Row="1" Padding="24,12,24,28">
+            <Button Text="Accéder à mon tableau de bord"
+                    Style="{StaticResource BcGlowButton}"
+                    Command="{Binding FinishCommand}"
+                    IsEnabled="{Binding CanFinish}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

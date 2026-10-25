@@ -1,188 +1,68 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:controls="clr-namespace:Become.Controls"
-             xmlns:helpers="clr-namespace:Become.Helpers"
-             xmlns:models="clr-namespace:Become.Models"
-             xmlns:vm="clr-namespace:Become.ViewModels"
              x:Class="Become.Views.GoalsPage"
-             x:DataType="vm:GoalsViewModel"
-             Shell.NavBarIsVisible="False"
-             ios:Page.UseSafeArea="True">
+             Style="{StaticResource BcPage}"
+             Title="Objectifs">
 
-    <Grid RowDefinitions="*,Auto">
-        <ScrollView Grid.Row="0">
-            <VerticalStackLayout Padding="24,16,24,24" Spacing="20">
+    <Grid Background="{StaticResource BcNightBrush}">
+        <ScrollView>
+            <VerticalStackLayout Padding="24,36,24,24" Spacing="20">
 
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Mes objectifs" Style="{StaticResource Title}"
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Tes objectifs" Style="{StaticResource BcDarkTitle}"
                            SemanticProperties.HeadingLevel="Level1" />
-                    <Label Text="Donnez une direction à vos petits pas."
-                           Style="{StaticResource BodySecondary}" />
+                    <Label Text="{Binding CountText}" Style="{StaticResource BcDarkBody}" FontSize="15" />
                 </VerticalStackLayout>
 
-                <!-- Recherche -->
-                <Border Style="{StaticResource FieldBorder}" HeightRequest="52"
-                        IsVisible="{Binding HasGoals}">
-                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Padding="16,0">
-                        <Label Text="🔍" FontSize="16" VerticalOptions="Center"
-                               AutomationProperties.IsInAccessibleTree="False" />
-                        <Entry Grid.Column="1"
-                               Text="{Binding Search}"
-                               Placeholder="Rechercher un objectif"
-                               PlaceholderColor="{StaticResource TextSecondary}"
-                               TextColor="{StaticResource TextPrimary}"
-                               FontFamily="InterRegular" FontSize="16"
-                               BackgroundColor="Transparent"
-                               ReturnType="Search"
-                               ClearButtonVisibility="WhileEditing"
-                               VerticalOptions="Center"
-                               SemanticProperties.Description="Rechercher un objectif" />
-                    </Grid>
+                <Border Style="{StaticResource BcDarkCard}" IsVisible="{Binding HasNoGoals}">
+                    <Label Text="Tu n'as pas encore d'objectif actif. Ajoute-en un pour que BECOME te propose des actions."
+                           TextColor="{StaticResource BcOnNight}" FontSize="16" />
                 </Border>
 
-                <!-- Filtres : le texte du bouton porte le compteur, la couleur n'est pas seule porteuse du sens -->
-                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" IsVisible="{Binding HasGoals}">
-                    <Button Grid.Column="0" Text="{Binding AllChip}"
-                            Command="{Binding SetFilterCommand}" CommandParameter="all"
-                            Style="{StaticResource Chip}">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding IsAllSelected}" Value="True">
-                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                                <Setter Property="TextColor" Value="White" />
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <Button Grid.Column="1" Text="{Binding ActiveChip}"
-                            Command="{Binding SetFilterCommand}" CommandParameter="active"
-                            Style="{StaticResource Chip}">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding IsActiveSelected}" Value="True">
-                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                                <Setter Property="TextColor" Value="White" />
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                    <Button Grid.Column="2" Text="{Binding FinishedChip}"
-                            Command="{Binding SetFilterCommand}" CommandParameter="finished"
-                            Style="{StaticResource Chip}">
-                        <Button.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding IsFinishedSelected}" Value="True">
-                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                                <Setter Property="TextColor" Value="White" />
-                            </DataTrigger>
-                        </Button.Triggers>
-                    </Button>
-                </Grid>
+                <VerticalStackLayout Spacing="16" BindableLayout.ItemsSource="{Binding Goals}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource BcDarkCard}">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="{Binding Domain}" Style="{StaticResource BcSectionLabel}" />
+                                    <Label Text="{Binding Title}" Style="{StaticResource BcDarkHeading}" />
+                                    <Label Text="{Binding Description}" Style="{StaticResource BcDarkBody}" FontSize="15" />
+                                    <Label Text="{Binding ExpectedResult}"
+                                           TextColor="{StaticResource BcOnNight}" FontSize="15" />
+                                    <Label Text="{Binding DueText}" Style="{StaticResource BcDarkLabel}"
+                                           IsVisible="{Binding HasDue}" />
 
-                <!-- État vide : aucun objectif -->
-                <Border Style="{StaticResource Card}" IsVisible="{Binding HasNoGoalAtAll}">
-                    <VerticalStackLayout Spacing="12">
-                        <Label Text="Aucun objectif pour l'instant" Style="{StaticResource H2}" />
-                        <Label Text="Un objectif, quelques jalons, et un pas par jour : commencez par le premier."
-                               Style="{StaticResource BodySecondary}" />
-                    </VerticalStackLayout>
-                </Border>
+                                    <ProgressBar Progress="{Binding Progress}"
+                                                 ProgressColor="{StaticResource BcGlowTeal}" Margin="0,6,0,0" />
+                                    <Label Text="{Binding ProgressText}" Style="{StaticResource BcDarkLabel}" />
 
-                <!-- État vide : aucun résultat -->
-                <Label IsVisible="{Binding HasNoResult}"
-                       Text="Aucun objectif ne correspond à votre recherche."
-                       Style="{StaticResource BodySecondary}" />
-
-                <!-- En cours -->
-                <VerticalStackLayout Spacing="16" IsVisible="{Binding ShowActive}">
-                    <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="En cours" Style="{StaticResource SectionTitle}"
-                               SemanticProperties.HeadingLevel="Level2" />
-                        <Label Grid.Column="1" Text="{Binding ActiveCount}"
-                               FontFamily="InterSemibold" FontSize="14"
-                               TextColor="{StaticResource Primary}" VerticalOptions="Center" />
-                    </Grid>
-
-                    <VerticalStackLayout Spacing="16" BindableLayout.ItemsSource="{Binding ActiveGoals}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="models:Goal">
-                                <Border Style="{StaticResource Card}">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnGoalTapped" />
-                                    </Border.GestureRecognizers>
-                                    <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto"
-                                          RowSpacing="14" ColumnSpacing="16">
-                                        <Border WidthRequest="56" HeightRequest="56"
-                                                BackgroundColor="{StaticResource PrimaryTint}" StrokeThickness="0">
-                                            <Border.StrokeShape>
-                                                <RoundRectangle CornerRadius="16" />
-                                            </Border.StrokeShape>
-                                            <Label Text="{Binding Icon}" FontSize="26"
-                                                   HorizontalOptions="Center" VerticalOptions="Center" />
-                                        </Border>
-                                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
-                                            <Label Text="{Binding Title}" Style="{StaticResource CardTitle}" />
-                                            <Label Text="{Binding Subtitle}" Style="{StaticResource Caption}" />
-                                        </VerticalStackLayout>
-                                        <Label Grid.Column="2" Text="{x:Static helpers:Icons.Chevron}" FontSize="28"
-                                               TextColor="{StaticResource TextSecondary}" VerticalOptions="Center" />
-                                        <Grid Grid.Row="1" Grid.ColumnSpan="3" ColumnDefinitions="*,Auto">
-                                            <Label Text="{Binding ProgressText}" Style="{StaticResource BodySecondary}" />
-                                            <Label Grid.Column="1" Text="{Binding PercentText}"
-                                                   FontFamily="InterSemibold" TextColor="{StaticResource Primary}" />
-                                        </Grid>
-                                        <controls:LinearProgress Grid.Row="2" Grid.ColumnSpan="3"
-                                                                 Progress="{Binding Progress}" />
+                                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,6,0,0">
+                                        <Button Grid.Column="0" Text="Modifier"
+                                                Style="{StaticResource BcGhostButton}" FontSize="13" HeightRequest="44"
+                                                Padding="0" Command="{Binding EditCommand}" />
+                                        <Button Grid.Column="1" Text="Atteint"
+                                                Style="{StaticResource BcGhostButton}" FontSize="13" HeightRequest="44"
+                                                Padding="0" Command="{Binding AchieveCommand}" />
+                                        <Button Grid.Column="2" Text="Archiver"
+                                                Style="{StaticResource BcGhostButton}" FontSize="13" HeightRequest="44"
+                                                Padding="0" Command="{Binding ArchiveCommand}" />
                                     </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
 
-                <!-- Terminés -->
-                <VerticalStackLayout Spacing="16" IsVisible="{Binding ShowFinished}">
-                    <Label Text="{Binding FinishedTitle}" Style="{StaticResource SectionTitle}"
-                           SemanticProperties.HeadingLevel="Level2" />
+                <Button Text="Ajouter un objectif"
+                        Style="{StaticResource BcGlowButton}"
+                        Command="{Binding AddGoalCommand}"
+                        IsVisible="{Binding CanAdd}" />
 
-                    <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding FinishedGoals}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="models:Goal">
-                                <Border Style="{StaticResource Card}" Padding="20,16">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnGoalTapped" />
-                                    </Border.GestureRecognizers>
-                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
-                                            <Label Text="{Binding Title}" Style="{StaticResource CardTitle}" />
-                                            <Label Text="{Binding FinishedSubtitle}" Style="{StaticResource Caption}" />
-                                        </VerticalStackLayout>
-                                        <Border Grid.Column="1" Style="{StaticResource Badge}"
-                                                BackgroundColor="{StaticResource PrimaryTint}" VerticalOptions="Center">
-                                            <Label Text="{Binding StatusText}" FontFamily="InterSemibold" FontSize="14"
-                                                   TextColor="{StaticResource TextSecondary}">
-                                                <Label.Triggers>
-                                                    <DataTrigger TargetType="Label" Binding="{Binding IsAchieved}" Value="True">
-                                                        <Setter Property="TextColor" Value="{StaticResource Success}" />
-                                                    </DataTrigger>
-                                                </Label.Triggers>
-                                            </Label>
-                                            <Border.Triggers>
-                                                <DataTrigger TargetType="Border" Binding="{Binding IsAchieved}" Value="True">
-                                                    <Setter Property="BackgroundColor" Value="{StaticResource SuccessTint}" />
-                                                </DataTrigger>
-                                            </Border.Triggers>
-                                        </Border>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </VerticalStackLayout>
-                </VerticalStackLayout>
+                <Label Text="{Binding AchievedText}" Style="{StaticResource BcDarkLabel}"
+                       IsVisible="{Binding HasAchieved}" />
 
-                <Button Text="+  Créer un objectif"
-                        Command="{Binding CreateGoalCommand}"
-                        Style="{StaticResource PrimaryButton}" />
             </VerticalStackLayout>
         </ScrollView>
-
-        <controls:BottomNavBar Grid.Row="1" ActiveTab="goals" TabSelected="OnTabSelected" />
     </Grid>
 </ContentPage>

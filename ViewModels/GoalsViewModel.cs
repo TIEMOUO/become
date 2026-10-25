@@ -1,81 +1,86 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Become.Helpers;
-using Become.Models;
+using Become.Domain;
 using Become.Services;
 
 namespace Become.ViewModels;
 
-public class GoalsViewModel : BaseViewModel
+public class GoalsViewModel : BecomeViewModelBase
 {
-    private readonly IGoalStore _store;
+    private readonly IBecomeStore _store;
+    private string _countText = "";
+    private int _achieved;
+    private bool _canAdd, _hasGoals;
 
-    private string _search = "";
-    private string _filter = "all";   // all | active | finished
+    public ObservableCollection<GoalCardRow> Goals { get; } = new();
 
-    public GoalsViewModel(IGoalStore store)
+    public string CountText { get => _countText; set => Set(ref _countText, value); }
+    public string AchievedText => $"Objectifs atteints : {_achieved}";
+    public bool HasAchieved => _achieved > 0;
+    public bool CanAdd { get => _canAdd; set => Set(ref _canAdd, value); }
+
+    public bool HasGoals
+    {
+        get => _hasGoals;
+        set { if (Set(ref _hasGoals, value)) OnPropertyChanged(nameof(HasNoGoals)); }
+    }
+    public bool HasNoGoals => !HasGoals;
+
+    public ICommand AddGoalCommand { get; }
+
+    public GoalsViewModel(IBecomeStore store)
     {
         _store = store;
-        SetFilterCommand = new Command<string>(f => { Filter = f ?? "all"; });
-        CreateGoalCommand = new Command(async () => await AppNavigator.OpenCreateGoalAsync());
-        OpenGoalCommand = new Command<Goal>(async g => { if (g is not null) await AppNavigator.OpenGoalAsync(g.Id); });
+        AddGoalCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.GoalSuggestionsPage)));
     }
 
-    public ObservableCollection<Goal> ActiveGoals { get; } = new();
-    public ObservableCollection<Goal> FinishedGoals { get; } = new();
-
-    public string Search
+    public async Task LoadAsync()
     {
-        get => _search;
-        set { if (SetProperty(ref _search, value)) Refresh(); }
+        var d = await _store.GetAsync();
+        var active = d.Goals.Where(g => g.Status == GoalStatus.Active).ToList();
+
+        Goals.Clear();
+        foreach (var g in active)
+            Goals.Add(new GoalCardRow(g, BecomeStore.EstimateProgress(d, g), EditAsync, AchieveAsync, ArchiveAsync));
+
+        HasGoals = Goals.Count > 0;
+        CountText = $"{active.Count} sur {BecomeStore.MaxActiveGoals} objectifs actifs";
+        CanAdd = active.Count < BecomeStore.MaxActiveGoals;
+        _achieved = d.Goals.Count(g => g.Status == GoalStatus.Achieved);
+        OnPropertyChanged(nameof(AchievedText));
+        OnPropertyChanged(nameof(HasAchieved));
     }
 
-    public string Filter
+    private async Task EditAsync(GoalCardRow row) =>
+        await Shell.Current.GoToAsync($"{nameof(Views.GoalEditPage)}?id={row.Id}");
+
+    private async Task AchieveAsync(GoalCardRow row)
     {
-        get => _filter;
-        private set { if (SetProperty(ref _filter, value)) Refresh(); }
+        var confirm = await Shell.Current.DisplayAlert(
+            "Objectif atteint ?",
+            "Marque-le comme atteint seulement si le résultat attendu est vraiment obtenu. C'est toi qui décides.",
+            "Oui, il est atteint", "Pas encore");
+        if (!confirm) return;
+        await SetStatusAsync(row, GoalStatus.Achieved);
     }
 
-    // ----- Compteurs et état des filtres -----
-    public string AllChip => $"Tous · {_store.Goals.Count}";
-    public string ActiveChip => $"En cours · {_store.Goals.Count(g => !g.IsFinished)}";
-    public string FinishedChip => $"Terminés · {_store.Goals.Count(g => g.IsFinished)}";
-    public bool IsAllSelected => Filter == "all";
-    public bool IsActiveSelected => Filter == "active";
-    public bool IsFinishedSelected => Filter == "finished";
-
-    // ----- Sections -----
-    public bool ShowActive => ActiveGoals.Count > 0;
-    public bool ShowFinished => FinishedGoals.Count > 0;
-    public string ActiveCount => $"{ActiveGoals.Count} objectif{(ActiveGoals.Count > 1 ? "s" : "")}";
-    public string FinishedTitle => Filter == "finished" ? "Terminés" : "Dernier objectif terminé";
-
-    // ----- États vides -----
-    public bool HasNoGoalAtAll => _store.Goals.Count == 0;
-    public bool HasNoResult => _store.Goals.Count > 0 && ActiveGoals.Count == 0 && FinishedGoals.Count == 0;
-    public bool HasGoals => _store.Goals.Count > 0;
-
-    public ICommand SetFilterCommand { get; }
-    public ICommand CreateGoalCommand { get; }
-    public ICommand OpenGoalCommand { get; }
-
-    public void Refresh()
+    private async Task ArchiveAsync(GoalCardRow row)
     {
-        var query = (Search ?? "").Trim();
-        bool Matches(Goal g) => query.Length == 0 || g.Title.Contains(query, StringComparison.CurrentCultureIgnoreCase);
+        var confirm = await Shell.Current.DisplayAlert(
+            "Archiver cet objectif ?",
+            "Il ne sera plus actif, mais son historique est conservé.",
+            "Archiver", "Annuler");
+        if (!confirm) return;
+        await SetStatusAsync(row, GoalStatus.Archived);
+    }
 
-        ActiveGoals.Clear();
-        FinishedGoals.Clear();
-
-        if (Filter != "finished")
-            foreach (var g in _store.Goals.Where(g => !g.IsFinished && Matches(g))) ActiveGoals.Add(g);
-
-        if (Filter != "active")
-        {
-            var finished = _store.Goals.Where(g => g.IsFinished && Matches(g)).OrderByDescending(g => g.TargetDate);
-            foreach (var g in Filter == "all" ? finished.Take(1) : finished) FinishedGoals.Add(g);
-        }
-
-        OnPropertyChanged(string.Empty);
+    private async Task SetStatusAsync(GoalCardRow row, GoalStatus status)
+    {
+        var d = await _store.GetAsync();
+        var g = d.Goals.FirstOrDefault(x => x.Id == row.Id);
+        if (g is null) return;
+        g.Status = status;
+        await _store.SaveAsync();
+        await LoadAsync();
     }
 }

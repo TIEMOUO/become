@@ -10,7 +10,7 @@ public record WeekBar(string Range, string Counts, string PercentText, double Ba
 
 public record MonthGoalItem(string Title, string Detail, string StatusText, bool IsAchieved, bool IsFinished);
 
-public class ReportViewModel : BaseViewModel
+public class ReportViewModel : BecomeViewModelBase
 {
     private readonly IGoalStore _store;
 

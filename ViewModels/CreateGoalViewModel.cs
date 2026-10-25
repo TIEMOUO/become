@@ -38,7 +38,7 @@ public class DayChip : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 }
 
-public class CreateGoalViewModel : BaseViewModel
+public class CreateGoalViewModel : BecomeViewModelBase
 {
     private readonly IGoalStore _store;
 

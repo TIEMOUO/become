@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Become.Views.ProfilePage"
+             Style="{StaticResource BcPage}"
+             Title="Profil">
+
+    <Grid Background="{StaticResource BcNightBrush}">
+        <ScrollView>
+            <VerticalStackLayout Padding="24,36,24,24" Spacing="22">
+
+                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Border WidthRequest="84" HeightRequest="84" HorizontalOptions="Center"
+                            StrokeThickness="0" StrokeShape="RoundRectangle 42">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="{StaticResource BcGlowViolet}" Offset="0.0" />
+                                <GradientStop Color="{StaticResource BcGlowTeal}" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Label Text="{Binding Initial}" FontSize="34" FontAttributes="Bold"
+                               TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <Label Text="{Binding Name}" Style="{StaticResource BcDarkTitle}" FontSize="24"
+                           HorizontalTextAlignment="Center"
+                           SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="{Binding Email}" Style="{StaticResource BcDarkBody}" FontSize="15"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="MA VISION" Style="{StaticResource BcSectionLabel}" />
+                    <Border Style="{StaticResource BcDarkCard}">
+                        <Label Text="{Binding VisionText}"
+                               TextColor="{StaticResource BcOnNight}" FontSize="16" LineHeight="1.4" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <Button Text="Modifier ma vision"
+                            Style="{StaticResource BcGhostButton}"
+                            Command="{Binding EditVisionCommand}" />
+                    <Button Text="Modifier mes priorités"
+                            Style="{StaticResource BcGhostButton}"
+                            Command="{Binding EditPrioritiesCommand}" />
+                    <Button Text="Se déconnecter"
+                            Style="{StaticResource BcGhostButton}"
+                            TextColor="#FF8A8A"
+                            Command="{Binding LogoutCommand}" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,92 +1,73 @@
 using System.Windows.Input;
-using Become.Helpers;
 using Become.Services;
 
 namespace Become.ViewModels;
 
-public class LoginViewModel : BaseViewModel
+public class LoginViewModel : BecomeViewModelBase
 {
-    private readonly IAuthService _auth;
+    private readonly IAccountService _accounts;
 
-    private string _email = "";
-    private string _password = "";
-    private string _emailError = "";
-    private string _passwordError = "";
-    private string _globalError = "";
-    private bool _isBusy;
+    private string _email = "", _password = "";
+    private string _emailError = "", _passwordError = "", _globalError = "";
+    private bool _isBusy, _isPasswordHidden = true;
 
-    public LoginViewModel(IAuthService auth)
-    {
-        _auth = auth;
-        LoginCommand = new Command(async () => await LoginAsync(), () => !IsBusy);
-        RegisterCommand = new Command(async () => await AppNavigator.OpenRegisterAsync());
-        ForgotPasswordCommand = new Command(async () => await AppNavigator.OpenForgotPasswordAsync());
-        AppleCommand = new Command(async () => await Shell.Current.DisplayAlert("Bientôt disponible", "La connexion avec Apple sera ajoutée prochainement.", "OK"));
-    }
+    public string Email { get => _email; set => Set(ref _email, value); }
+    public string Password { get => _password; set => Set(ref _password, value); }
 
-    public string Email
-    {
-        get => _email;
-        set { if (SetProperty(ref _email, value)) { EmailError = ""; GlobalError = ""; } }
-    }
+    public string EmailError { get => _emailError; set { if (Set(ref _emailError, value)) OnPropertyChanged(nameof(HasEmailError)); } }
+    public string PasswordError { get => _passwordError; set { if (Set(ref _passwordError, value)) OnPropertyChanged(nameof(HasPasswordError)); } }
+    public string GlobalError { get => _globalError; set { if (Set(ref _globalError, value)) OnPropertyChanged(nameof(HasGlobalError)); } }
 
-    public string Password
-    {
-        get => _password;
-        set { if (SetProperty(ref _password, value)) { PasswordError = ""; GlobalError = ""; } }
-    }
-
-    public string EmailError { get => _emailError; private set => SetProperty(ref _emailError, value); }
-    public string PasswordError { get => _passwordError; private set => SetProperty(ref _passwordError, value); }
-
-    public string GlobalError
-    {
-        get => _globalError;
-        private set { if (SetProperty(ref _globalError, value)) OnPropertyChanged(nameof(HasGlobalError)); }
-    }
+    public bool HasEmailError => !string.IsNullOrEmpty(EmailError);
+    public bool HasPasswordError => !string.IsNullOrEmpty(PasswordError);
     public bool HasGlobalError => !string.IsNullOrEmpty(GlobalError);
 
-    public bool IsBusy
-    {
-        get => _isBusy;
-        private set
-        {
-            if (!SetProperty(ref _isBusy, value)) return;
-            OnPropertyChanged(nameof(ButtonText));
-            ((Command)LoginCommand).ChangeCanExecute();
-        }
-    }
+    public bool IsBusy { get => _isBusy; set { if (Set(ref _isBusy, value)) OnPropertyChanged(nameof(IsNotBusy)); } }
+    public bool IsNotBusy => !IsBusy;
 
-    public string ButtonText => IsBusy ? "Connexion en cours…" : "Se connecter";
+    public bool IsPasswordHidden { get => _isPasswordHidden; set => Set(ref _isPasswordHidden, value); }
 
     public ICommand LoginCommand { get; }
-    public ICommand RegisterCommand { get; }
-    public ICommand ForgotPasswordCommand { get; }
-    public ICommand AppleCommand { get; }
+    public ICommand TogglePasswordCommand { get; }
+    public ICommand GoToRegisterCommand { get; }
+
+    public LoginViewModel(IAccountService accounts)
+    {
+        _accounts = accounts;
+        LoginCommand = new Command(async () => await LoginAsync());
+        TogglePasswordCommand = new Command(() => IsPasswordHidden = !IsPasswordHidden);
+        GoToRegisterCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(Views.RegisterPage)));
+    }
+
+    private bool Validate()
+    {
+        EmailError = IsValidEmail(Email) ? "" : "Entre une adresse e-mail valide.";
+        PasswordError = string.IsNullOrEmpty(Password) ? "Entre ton mot de passe." : "";
+        return !HasEmailError && !HasPasswordError;
+    }
 
     private async Task LoginAsync()
     {
+        if (IsBusy) return;
         GlobalError = "";
-        EmailError = Validators.Email(Email);
-        PasswordError = string.IsNullOrWhiteSpace(Password) ? "Saisissez votre mot de passe." : "";
-        if (EmailError.Length > 0 || PasswordError.Length > 0) return;
+        if (!Validate()) return;
 
-        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
-        {
-            GlobalError = "Pas de connexion Internet. Vérifiez votre réseau et réessayez.";
-            return;
-        }
-
-        IsBusy = true;
         try
         {
-            var result = await _auth.LoginAsync(Email.Trim(), Password);
-            if (result.Success) await AppNavigator.GoHomeAsync();
-            else GlobalError = result.Error ?? "Connexion impossible.";
+            IsBusy = true;
+            var result = await _accounts.LoginAsync(Email, Password);
+
+            if (!result.Success)
+            {
+                GlobalError = result.Error ?? "Connexion impossible.";
+                return;
+            }
+
+            await OnboardingRouter.GoNextAsync();
         }
-        catch
+        catch (Exception)
         {
-            GlobalError = "Un problème est survenu. Réessayez dans un instant.";
+            GlobalError = "Une erreur est survenue. Réessaie dans un instant.";
         }
         finally
         {

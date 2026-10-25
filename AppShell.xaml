@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:views="clr-namespace:Become.Views"
-       x:Class="Become.AppShell"
-       Shell.NavBarIsVisible="False"
-       Shell.FlyoutBehavior="Disabled"
-       Shell.TabBarIsVisible="False"
-       BackgroundColor="{StaticResource Background}">
+<Shell
+    x:Class="Become.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:Become.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarBackgroundColor="#14123A"
+    Shell.TabBarForegroundColor="#2DD4BF"
+    Shell.TabBarTitleColor="#2DD4BF"
+    Shell.TabBarUnselectedColor="#B8B5D6"
+    Title="Become">
 
-    <!-- Authentification -->
-    <ShellContent Route="login" ContentTemplate="{DataTemplate views:LoginPage}" />
+    <ShellContent
+        Title="Bienvenue"
+        Route="WelcomePage"
+        ContentTemplate="{DataTemplate views:WelcomePage}" />
 
-    <!-- Application : 4 destinations de la barre de navigation -->
-    <ShellContent Route="home" ContentTemplate="{DataTemplate views:HomePage}" />
-    <ShellContent Route="goals" ContentTemplate="{DataTemplate views:GoalsPage}" />
-    <ShellContent Route="tracking" ContentTemplate="{DataTemplate views:TrackingPage}" />
-    <ShellContent Route="report" ContentTemplate="{DataTemplate views:ReportPage}" />
+    <TabBar Route="MainTabs">
+        <ShellContent
+            Title="Accueil"
+            Icon="tab_home.png"
+            Route="home"
+            ContentTemplate="{DataTemplate views:HomePage}" />
+        <ShellContent
+            Title="Objectifs"
+            Icon="tab_goals.png"
+            Route="goals"
+            ContentTemplate="{DataTemplate views:GoalsPage}" />
+        <ShellContent
+            Title="Suivi"
+            Icon="tab_progress.png"
+            Route="progress"
+            ContentTemplate="{DataTemplate views:ProgressPage}" />
+        <ShellContent
+            Title="Profil"
+            Icon="tab_profile.png"
+            Route="profile"
+            ContentTemplate="{DataTemplate views:ProfilePage}" />
+    </TabBar>
+
 </Shell>

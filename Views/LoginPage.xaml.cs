@@ -9,4 +9,9 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
         BindingContext = viewModel;
     }
+
+    private async void OnBackTapped(object? sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync("..");
+    }
 }

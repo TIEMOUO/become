@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Become.Controls"
+             x:Class="Become.Views.VisionResultPage"
+             Style="{StaticResource BcPage}"
+             Title="Ma vision">
+
+    <Grid Background="{StaticResource BcNightBrush}" RowDefinitions="*,Auto">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="24,24,24,16" Spacing="18">
+
+                <controls:BecomeBackButton />
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="TA VISION" Style="{StaticResource BcSectionLabel}" />
+                    <Label Text="Voici ta vision."
+                           Style="{StaticResource BcDarkTitle}"
+                           SemanticProperties.HeadingLevel="Level1" />
+                    <Label Text="Relis-la, modifie-la avec tes mots, puis valide-la."
+                           Style="{StaticResource BcDarkBody}" />
+                </VerticalStackLayout>
+
+                <Border Style="{StaticResource BcDarkField}" Padding="14,6">
+                    <Editor Text="{Binding VisionText}"
+                            Placeholder="Ta vision de vie"
+                            MinimumHeightRequest="220"
+                            Style="{StaticResource BcDarkEditor}" />
+                </Border>
+
+                <Label Text="Ce texte est assemblé à partir de tes réponses : ce n'est pas une génération intelligente. C'est à toi de le rendre fidèle à ce que tu veux."
+                       Style="{StaticResource BcDarkLabel}" FontAttributes="Italic" />
+
+                <Label Text="{Binding Error}" Style="{StaticResource BcDarkError}"
+                       IsVisible="{Binding HasError}" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <VerticalStackLayout Grid.Row="1" Spacing="8" Padding="24,12,24,28">
+            <Button Text="Valider ma vision"
+                    Style="{StaticResource BcGlowButton}"
+                    Command="{Binding ValidateCommand}" />
+            <Button Text="Réécrire à partir de mes réponses"
+                    Style="{StaticResource BcGhostButton}"
+                    Command="{Binding RegenerateCommand}" />
+            <Button Text="Revoir mes réponses"
+                    Style="{StaticResource BcLinkButton}"
+                    Command="{Binding ReviewAnswersCommand}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>
